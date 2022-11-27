@@ -1,11 +1,10 @@
 import sys
 from typing import Union, Optional
 from operator import add, sub, mul, truediv
-
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtGui import QFontDatabase
-
 from design import Ui_MainWindow
+
 
 operations = {
     '+': add,
@@ -14,8 +13,10 @@ operations = {
     '/': truediv
 }
 
+
 error_zero_div = 'Division by zero'
 error_undefined = 'Result is undefined'
+
 
 default_font_size = 16
 default_entry_font_size = 40
@@ -64,7 +65,8 @@ class Calculator(QMainWindow):
         self.clear_temp_if_equality()
         btn = self.sender()
 
-        digit_buttons = ('btn_0', 'btn_1', 'btn_2', 'btn_3', 'btn_4', 'btn_5', 'btn_6', 'btn_7', 'btn_8', 'btn_9')
+        digit_buttons = ('btn_0', 'btn_1', 'btn_2', 'btn_3', 'btn_4',
+                         'btn_5', 'btn_6', 'btn_7', 'btn_8', 'btn_9')
 
         if btn.objectName() in digit_buttons:
             if self.entry.text() == '0':
@@ -135,7 +137,6 @@ class Calculator(QMainWindow):
     def remove_trailing_zeros(num: str) -> str:
         n = str(float(num))
         return n.replace('.0', '') if n.endswith('.0') else n
-        # return n[:-2] if n[-2:] == '.0' else n
 
     def add_temp(self) -> None:
         btn = self.sender()

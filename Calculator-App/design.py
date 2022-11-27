@@ -1,7 +1,6 @@
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtGui import (QCursor, QIcon, QShortcut)
-from PySide6.QtWidgets import (QGridLayout, QLabel, QLineEdit, QWidget,
-                               QPushButton, QSizePolicy, QVBoxLayout)
+from PySide6.QtCore import QCoreApplication, QMetaObject, QSize, Qt
+from PySide6.QtGui import QCursor, QIcon, QShortcut
+from PySide6.QtWidgets import QGridLayout, QLabel, QLineEdit, QWidget, QPushButton, QSizePolicy, QVBoxLayout
 import files_rc
 
 
