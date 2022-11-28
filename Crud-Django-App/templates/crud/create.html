@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Create new task {{ block.super }} {% endblock %}
+{% block content %}
+    <div>
+        <a href="{% url 'list' %}">&#8592; Back</a>
+    </div>
+    <div>
+        <form method='POST' action=''>
+            {% csrf_token %}
+            {{ form.title }}
+            {{ form.content }}
+            <button type='submit'>Create</button>
+        </form>
+    </div>
+{% endblock content %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Task list {{ block.super }} {% endblock %}
+{% block content %}
+    <div>
+        <a href="{% url 'create' %}">Create</a>
+        <hr>
+        {% for note in notes %}
+            {{ note }}
+            {{ note.content }}
+            <a href="{% url 'detail' note.pk %}">Detail view</a>
+            <br>
+        {% endfor %}
+    </div>
+{% endblock content %}
