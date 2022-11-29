@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Weather App</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+        <link href="{% static 'style.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <div>
+            <form method="POST">
+                {% csrf_token %}
+                <div>
+                    {% for message in messages %}
+                        <div class="card" style="width: 32rem;">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">{{ message }}</li>
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+                {{ form.name }}
+                <div class="d-grid gap-2" style="margin-top: 5px; margin-bottom: 15px;">
+                    <button type="submit" class="btn btn-outline-primary">Узнать погоду</button>    
+                </div>
+            </form>
+            {% for city_weather in weather_data %}
+                <div class="card" style="width: 32rem;">
+                    <div class="card-header">
+                        <span>Информация о погоде <img class="icon" src="http://openweathermap.org/img/w/{{ city_weather.icon }}.png" alt="Не получилось загрузить изображение"></span>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><b>Город: </b>{{ city_weather.city }}</li>
+                        <li class="list-group-item"><b>Температура: </b>{{ city_weather.temp }}</li>
+                    </ul>
+                    <button class='btn btn-outline-primary' type="submit"><a href="{% url 'delete_city' city_weather.city %}" style="margin-top: 10px; margin-bottom: 10px; margin-left: auto; margin-right: auto;">Удалить</a></button>
+                </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>

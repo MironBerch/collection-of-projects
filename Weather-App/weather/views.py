@@ -25,7 +25,7 @@ def main(request):
         'form': form,
     }
     
-    return render(request, 'weather/main.html', context)
+    return render(request, 'main.html', context)
 
 
 def form_processing(request, form, URL):
