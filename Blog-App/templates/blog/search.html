@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div>
+        {% for post in posts %}
+            <div>
+                {% if post.photo %}<img src="{{ post.photo.url}}" alt="post.title">{% else %}<p>No Image</p>{% endif%}
+                <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+                <h4>Posted By: {{ post.author }}</h4>{{ post.content|truncatewords_html:20|safe }}<h4><span>{{ post.create_at|date:"d.m.Y" }}</span></h4>
+            </div>
+            {% empty %}
+            <h3>По вашему запросу ничего не найдено</h3>
+        {% endfor %}
+    </div>
+        {% if page_obj.has_other_pages %}
+            <div>
+                {% for p in page_obg.paginator.range_page %}
+                    {% if page_obg.number == p %}<span>{{ p }}</span>
+                    {% elif p > page_obj.number|add:-3 and p < page_obj.number|add:3 %}<a href="?{{ s }}page={{ p }}">{{ p }}</a>{% endif %}
+                {% endfor %}
+                {% if page_obg.has_next %}<a href="?page={{ page_obg.next_page_number }}"><i aria-hidden="true"></i></a>{% endif %}
+            </div>
+        {% endif %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% load static %}
+{% load cache %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Blog</title>
+    </head>
+    <body>
+        {% cache 20 header  %}
+        {% include 'inc/_header.html' %}
+        {% endcache %}
+        {% block content %}{% endblock %}
+    </body>
+</html>

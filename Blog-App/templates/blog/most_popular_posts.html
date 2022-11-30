@@ -1,0 +1,9 @@
+<h2>Most popular posts</h2>
+<div>
+  {% for post in posts %}
+      <div>
+          {% if post.photo %}<img src="{{ post.photo.url}}" alt="post.title">{% else %}<p>No Image</p>{% endif%}
+          <h5><a href="{{ post.get_absolute_url }}">{{ post.title }}</a><p>By: {{ post.author }}<span>|</span>{{ post.create_at|date:"d.m.Y" }}</p></h5>
+      </div>
+  {% endfor %}
+</div>
