@@ -31,7 +31,7 @@ MIDDLEWARE = [
 ]
 
 
-ROOT_URLCONF = 'siteapp.urls'
+ROOT_URLCONF = 'config.urls'
 
 
 TEMPLATES = [
@@ -51,7 +51,7 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = 'siteapp.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
 DATABASES = {
