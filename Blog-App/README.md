@@ -2,8 +2,6 @@
 create at 27.06.22
 ## Technology stack:
 HTML, Python 3, Django 4
-## Screenshot:
-![Blog-App]
 ## Steps to be followed for first time use
 - Run this command - it download requirements
 ```
