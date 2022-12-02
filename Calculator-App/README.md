@@ -2,8 +2,6 @@
 create at 05.01.21
 ## Technology stack:
 Python 3, PySide6
-## Screenshot:
-![Calculator-App]
 ## Steps to be followed for first time use
 - Run this command - it download requirements
 ```
