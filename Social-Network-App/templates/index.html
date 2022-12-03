@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Index {{ block.super }} {% endblock %}
+{% block content %}
+                <div class="space-y-5 flex-shrink-0 lg:w-7/12">
+                        {% for post in posts reversed %}
+                        <div class="bg-white shadow rounded-md  -mx-2 lg:mx-0">
+                            <div class="flex justify-between items-center px-4 py-3">
+                                    <span><a href="/profile/{{post.user}}">@{{post.user}}</a></span>
+                            </div>      
+                                <a href="{{post.image.url}}">  
+                                    <img src="{{post.image.url}}" alt="">
+                                </a>
+                            <div class="py-3 px-4 space-y-3"> 
+                                <div class="flex space-x-4 lg:font-bold">
+                                    <a href="/like-post?post_id={{post.id}}" class="flex items-center space-x-2">
+                                            {% if post.likes == 0 %}
+                                            <p>No likes</p>
+                                            {% elif post.likes == 1 %}
+                                            <p>Liked by {{post.likes}} person</p>
+                                            {% else %}
+                                            <p>Liked by {{post.likes}} people</p>
+                                            {% endif %}
+                                    </a>
+                                </div>
+                                <p>
+                                    <a href="/profile/{{post.user}}"><strong>{{post.user}}</strong></a> {{post.caption}}
+                                </p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                        <div class="bg-white  shadow-md rounded-md overflow-hidden">
+                            <div>
+                                <h2>Users You Can Follow</h2>
+                            </div>
+                                {% for suggestion in suggestions_username_profile_list %}
+                                <div class="flex flex-1 items-center space-x-4">
+                                        <a href="/profile/{{suggestion.user}}">
+                                            <img alt='' src="{{suggestion.avatar.url}}" class="bg-gray-200 rounded-full w-10 h-10">
+                                        </a>
+                                        <span> {{suggestion.user}} </span>                     
+                                    <a href="/profile/{{suggestion.user}}"> View User </a>
+                                </div>
+                                {% endfor %}
+                        </div>
+                </div>       
+    </div>
+{% endblock content %}

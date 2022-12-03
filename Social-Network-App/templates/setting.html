@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Settings {{ block.super }} {% endblock %}
+{% block content %}
+    <div class="container m-auto"> 
+        <h1><a href="/">Home</a> / Account Setting for <b>{{user.username}}</b></h1>
+        <br>
+        <hr>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Profile Image</label>
+                            {% if user_profile.avatar %}
+                                <img src="{{user_profile.avatar.url}}" width="300" height="300" class="img-thumbnail" alt="...">
+                            {% else %}
+                                <p>No avatar</p>
+                            {% endif %}
+                            <input type="file" name="image" value="" class="form-control" id="formFile">
+                          </div>
+                        <div class="mb-3">
+                            <label for="about" class="form-label">Your bio</label>
+                            <textarea id="about" name="bio" class="form-control" rows="3">{{user_profile.bio}}</textarea>
+                        </div>
+                    </div> 
+                    <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+                        <button type="submit" class="btn btn-outline-primary"><a href="/">Cancel</a></button>
+                        <button type="submit" class="btn btn-outline-primary">Save settings</button>
+                    </div>
+                </form>
+        <br>
+    </div>
+{% endblock content %}

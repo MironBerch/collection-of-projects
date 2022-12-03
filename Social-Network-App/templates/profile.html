@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{ title }} Profile {{ block.super }} {% endblock %}
+{% block content %}
+	<div class="theme-layout">
+		<section>
+			<div class="feature-photo">
+				<form action="/follow" method="POST">
+					{% csrf_token %}
+					<div class="add-btn">
+					<span><b><a href="/">Home</a></b></span>
+					{% if user_post_length == 0 %}
+					<span><b>No Post</b></span>
+					{% elif user_post_length == 1 %}
+					<span><b>{{user_post_length}} Post</b></span>
+					{% else %}
+					<span><b>{{user_post_length}} Posts</b></span>
+					{% endif %}
+					{% if user_followers == 0 or user_followers == 1 %}
+					<span><b>{{user_followers}} follower</b></span>
+					{% else %}
+					<span><b>{{user_followers}} followers</b></span>
+					{% endif %}
+					<span><b>{{user_following}} following</b></span>
+					<input type="hidden" value="{{user.username}}" name="follower" />
+					<input type="hidden" value="{{user_object.username}}" name="user" />
+					{% if user_object.username == user.username %}
+						<a href="/settings" data-ripple="">Account Settings</a>
+					{% else %}
+						<a data-ripple=""><button type="submit" class="btn btn-primary">{{button_text}}</button></a>
+					{% endif %}
+					</div>
+				</form>
+				<div class="container-fluid">
+					<div class="col-lg-2 col-sm-3"><img src="{{user_profile.avatar.url}}" alt="" class="img-thumbnail"></div>
+					<div class="timeline-info"><ul><li class="admin-name"><h5><b>@{{user_profile.user.username}}</b></h5></li></ul></div>
+				</div>
+			</div>
+		</section>
+		<div class="bio">
+			{{user_profile.bio}}
+		</div>
+		<div class="gap gray-bg">
+			<div class="container-fluid">
+					<div class="row" id="page-contents">
+						{% for post in user_posts %}
+							<div class="card" style="width: 18rem;">
+								<a href="{{post.image.url}}"><img src="{{post.image.url}}" class="card-img-top" alt="..." alt=""></a>
+								<div class="card-body"><p class="card-text">{{post.caption}}</p></div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+{% endblock content %}
