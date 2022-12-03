@@ -4,18 +4,12 @@
 {% block content %}
             <div style="margin-left: 250px; margin-right: 250px;">
                     <div class="row ng-scope">
-                        <div class="col-md-3 col-md-push-9">
-                            <h4 class="text-center">Our results<span class="fw-semi-bold"><b>{{username}}</b></span></h4>
-                            <br>
-                        </div>
+                        <div class="col-md-3 col-md-push-9"><h4 class="text-center">Our results<span class="fw-semi-bold"><b>{{username}}</b></span></h4><br></div>
                         <div class="col-md-12 col-md-pull-3">
                             {% for users in username_profile_list %}
                             <div class="card" style="width: 48rem;">
                                 <a href="/profile/{{users.user}}"><img src="{{users.avatar.url}}" class="card-img-top" alt="..."></a>
-                                <div class="card-body">
-                                    <h5 class="card-title"><h4 class="text"><a href="/profile/{{users.user}}"><b>@{{users.user}}</b></a></h4></h5>
-                                    <p class="card-text">{{users.bio}}</p>
-                                </div>
+                                <div class="card-body"><h5 class="card-title"><h4 class="text"><a href="/profile/{{users.user}}"><b>@{{users.user}}</b></a></h4></h5><p class="card-text">{{users.bio}}</p></div>
                             </div>
                             {% endfor %}
                         </div>

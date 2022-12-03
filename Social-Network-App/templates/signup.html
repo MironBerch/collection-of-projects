@@ -11,9 +11,7 @@
             {% for message in messages %}
                 <h5>{{message}}</h5>
                 <div class="card-center" style="width: 32rem;">
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item"><h5>{{message}}</h5></li>
-                    </ul>
+                    <ul class="list-group list-group-flush"><li class="list-group-item"><h5>{{message}}</h5></li></ul>
                 </div>
             {% endfor %}
         </div>
@@ -38,9 +36,7 @@
                 <input type="password" name="password2" class="form-control" id="exampleInputPassword">
             </div>
             <button type="submit" class="btn btn-primary">Signin</button>
-            <div>
-                <p class="text-base"> Have an account?<a href="/signin" class=""> Signin </a></p>
-            </div>
+            <div><p class="text-base"> Have an account?<a href="/signin" class="">Signin</a></p></div>
         </form>
     </div>
 </body>

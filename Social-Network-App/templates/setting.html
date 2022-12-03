@@ -10,11 +10,7 @@
                     <div>
                         <div class="mb-3">
                             <label for="" class="form-label">Profile Image</label>
-                            {% if user_profile.avatar %}
-                                <img src="{{user_profile.avatar.url}}" width="300" height="300" class="img-thumbnail" alt="...">
-                            {% else %}
-                                <p>No avatar</p>
-                            {% endif %}
+                            {% if user_profile.avatar %}<img src="{{user_profile.avatar.url}}" width="300" height="300" class="img-thumbnail" alt="...">{% else %}<p>No avatar</p>{% endif %}
                             <input type="file" name="image" value="" class="form-control" id="formFile">
                           </div>
                         <div class="mb-3">

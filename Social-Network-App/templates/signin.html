@@ -8,11 +8,7 @@
     <body>
         <container class="container ">
             <div>
-                <div>
-                    {% for message in messages %}
-                        <h5>{{message}}</h5>
-                    {% endfor %}
-                </div>
+                <div>{% for message in messages %}<h5>{{message}}</h5>{% endfor %}</div>
                 <h1 class="text-center">Signin</h1>
                 <form action='' method='POST'>
                     {% csrf_token %}
@@ -25,9 +21,7 @@
                         <input type="password" name="password" class="form-control" id="exampleInputPassword">
                     </div>
                     <button type="submit" class="btn btn-primary">Signin</button>
-                    <div>
-                        <p class="text-base"> Not registered? <a href="/signup" class=""> Create a account </a></p>
-                    </div>
+                    <div><p class="text-base"> Not registered? <a href="/signup" class=""> Create a account </a></p></div>
                 </form>
             </div>
         </container>
