@@ -1,0 +1,14 @@
+{% load cart_template_tags %}
+<a href="/"><strong>e-commerce</strong></a>
+<ul>
+    {% comment %} 
+    <li><a href="/">Home<span>(current)</span></a></li>
+    <li><a href="/checkout">Checkout</a></li> {% endcomment %}
+</ul>
+<ul>{% if request.user.is_authenticated %}
+        <li><a href="{% url 'order-summary' %}">{{ request.user|cart_item_count }} Cart</a></li>
+        <li><a href="{% url 'logout' %}"> Logout </a></li>
+    {% else %}
+        <li><a href="{% url 'login' %}"> Login </a></li>
+        <li><a href="{% url 'signup' %}"> Signup </a></li>
+    {% endif %}</ul>

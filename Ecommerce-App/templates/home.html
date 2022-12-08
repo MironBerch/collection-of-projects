@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+    <span>Categories:</span>
+    <form><input type="text" placeholder="Search" aria-label="Search"></form>
+        {% for item in object_list %}
+            {% comment %}<img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg">{% endcomment %}
+            <img src="{{ item.image.url }}">
+            <a href="{{ item.get_absolute_url }}">get_absolute_url</a>
+            <h5>{{ item.get_category_display }}</h5>
+            <a href="{{ item.get_absolute_url }}">{{ item.title }}NEW</a>
+            <h4>${% if item.discount_price %}{{ item.discount_price }}{% else %}{{ item.price }}{% endif %}</h4>
+        {% endfor %}
+        {% if is_paginated %}
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">&laquo;>Previous</a>
+            {% endif %}
+                <a href="?page={{ page_obj.number }}">{{ page_obj.number }}(current)</a>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" aria-label="Next">Next</a>
+            {% endif %}
+      {% endif %}
+{% endblock content %}

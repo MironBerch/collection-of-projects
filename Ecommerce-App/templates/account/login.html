@@ -1,0 +1,16 @@
+{% extends "account/base.html" %}
+{% block head_title %}Login{% endblock %}
+{% block content %}
+    <form method="post" action="" role="form">
+        {% csrf_token %}
+        <h3>Login</h3>
+            <label>Username</label>{{ form.username }}
+            <label>Password</label>{{ form.password }}
+      {% if form.errors %}
+          <span>Your username or password did not match.</span>
+      {% endif %}
+      <button type="submit" value="login">Login</button>
+    <input type="hidden" name="next" value="{{ next }}">
+    <a href="{% url 'signup' %}">Login</a>
+    </form>
+{% endblock %}

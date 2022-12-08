@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Order Summary</h2>
+    {% for order_item in object.items.all %}
+        <h4>{{ forloop.counter }}</h4>
+        <h4>{{ order_item.item.title }}</h4>
+        <h4>{{ order_item.item.price }}</h4>
+        <h4>
+            <a href="{% url 'remove-single-item-from-cart' order_item.item.slug %}">remove-single-item-from-cart</a>{{ order_item.quantity }}
+            <a href="{% url 'add-to-cart' order_item.item.slug %}">add-to-car</a>
+        </h4>
+        {% if order_item.item.discount_price %}
+            ${{ order_item.get_total_discount_item_price }}
+            <span class="badge badge-primary">Saving ${{ order_item.get_amount_saved }}</span>
+        {% else %}
+            ${{ order_item.get_total_item_price }}
+        {% endif %}
+        <a href="{% url 'remove-from-cart' order_item.item.slug %}"></a>
+        {% empty %}
+        Your cart is empty <a href='/'>Continue shopping</a>
+        {% endfor %}
+        {% if object.coupon %}
+            <b>Coupon-${{ object.coupon.amount }}</b>
+        {% endif %}
+        {% if object.get_total %}
+            <b>Order Total-${{ object.get_total }}</b>
+            <a href='/checkout/'>Proceed to checkout</a>
+            <a href='/'>Continue shopping</a>
+        {% endif %}
+{% endblock content %}

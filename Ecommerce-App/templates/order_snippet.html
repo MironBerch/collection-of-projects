@@ -1,0 +1,17 @@
+<h4>Your cart{{ order.items.count }}</h4>
+<ul>
+    {% for order_item in order.items.all %}
+        <li><h6>{{ order_item.quantity }} x {{ order_item.item.title}} {{ order_item.item.description}}</h6><span>${{ order_item.get_final_price }}</span></li>
+    {% endfor %}
+    {% if order.coupon %}
+        <li><h6>Promo code</h6>{{ order.coupon.code }}<span>-${{ order.coupon.amount }}</span></li>
+        {% endif %}
+        <li>Total (USD)${{ order.get_total }}</li>
+</ul>
+{% if DISPLAY_COUPON_FORM %}
+    <form action="{% url 'core:add-coupon' %}" method="POST">
+        {% csrf_token %}
+        {{ couponform.code }}
+        <button type="submit">Redeem</button>
+    </form>
+{% endif %}

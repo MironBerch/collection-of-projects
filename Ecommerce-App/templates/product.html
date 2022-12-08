@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+    <a href="">{{ object.get_category_display }}</a>
+    <p>{% if object.discount_price %}${{ object.price }} ${{ object.discount_price }}{% else %}${{ object.price }}{% endif %}</p>
+    <p>Description: {{ object.description }}</p>
+    {% comment %} 
+    <form>
+        <input type="number" value="1" aria-label="Search">
+        <button type="submit">Add to cart</button>
+    </form>
+    {% endcomment %}
+    <a href="{{ object.get_add_to_cart_url }}" >Add to cart</a>
+    <a href="{{ object.get_remove_from_cart_url }}">Remove from cart</a>
+{% endblock content %}

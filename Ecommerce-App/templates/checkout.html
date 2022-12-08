@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Checkout form</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <h3>Shipping address</h3>
+        <input type='text' placeholder='1234 Main St' name='shipping_address'/><label>Address</label>
+        <input type='text' placeholder='Apartment or suite' name='shipping_address2'/><label>Address 2 (optional)</label>
+        <span>Please select a valid country.<label>Country</label>{{ form.shipping_country }}</span>
+        <span>Zip code required.<label>Zip</label><input type='text' placeholder='Zip code' name='shipping_zip'/></span>
+        <input type="checkbox" name="same_billing_address" ><label>Billing address is the same as my shipping address</label>
+        <input type="checkbox" name="set_default_shipping"><label>Save as default shipping address</label>
+        {% if default_shipping_address %}
+            <input type="checkbox" name="use_default_shipping" id="use_default_shipping">
+            <label for="use_default_shipping">Use default shipping address: {{ default_shipping_address.street_address|truncatechars:10 }}</label>
+        {% endif %}
+        <hr>
+        <h3>Billing address</h3>
+        <input type='text' placeholder='1234 Main St' name='billing_address'/><label>Address</label>
+        <input type='text' placeholder='Apartment or suite' name='billing_address2'/><label>Address 2 (optional)</label>
+        <label>Country</label>{ form.billing_country }}<span>Please select a valid country.</span><label for="billing_zip">Zip</label>
+        <input type='text' placeholder='Zip code' name='billing_zip'/><span>Zip code required.</span>
+        <input type="checkbox" name="set_default_billing" id="set_default_billing">
+        <label for="set_default_billing">Save as default billing address</label>
+        {% if default_billing_address %}
+            <input type="checkbox" name="use_default_billing" id="use_default_billing">
+            <label for="use_default_billing">Use default billing address: {{ default_billing_address.street_address|truncatechars:10 }}</label>
+        {% endif %}
+        <hr>
+        <h3>Payment option</h3>
+            {% for value, name in form.fields.payment_option.choices %}
+                <input id="{{ name }}" name="payment_option" value="{{ value }}" type="radio" required>
+                <label for="{{ name }}">{{ name }}</label>
+            {% endfor %}
+        <hr>
+        <button type="submit">Continue to checkout</button>
+    </form>
+    <div>{% include "order_snippet.html" %}</div>
+{% endblock content %}

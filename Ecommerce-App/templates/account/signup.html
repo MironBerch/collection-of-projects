@@ -1,0 +1,16 @@
+{% extends "account/base.html" %}
+{% block head_title %}Signup{% endblock %}
+{% block content %}
+    <form method="post" action="" role="form">
+        {% csrf_token %}
+        <div>
+            <h3>Create an account</h3>
+            <label>Username</label>{{ form.username }}
+            <label>Email</label>{{ form.email }}
+            <label>Password</label>{{ form.password }}
+            <label class="label is-medium">Confirm password</label>{{ form.confirm_password }}
+        </div>
+        <span>{{ form.errors }}</span>
+        <button type="submit" name="action">Create</button>
+    </form>
+{% endblock %}

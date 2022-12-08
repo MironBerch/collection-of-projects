@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Payment</h2>
+    {% if card %}
+        <input type="checkbox" name="use_default_card" id="use_default_card">
+        <label for="use_default_card">Use default card: **** **** **** {{ card.last4 }} 
+        <span>Exp: {{ card.exp_month }}/{{ card.exp_year }}</span></label>
+    {% endif %}
+        <form action="." method="post">
+            {% csrf_token %}
+            <input type="hidden" name="use_default" value="true">
+            <button id="stripeBtn">Submit Payment</button>  
+        </form>
+        <form action="." method="post" id="stripe-form">
+            {% csrf_token %}
+            <label for="card-element" id="stripeBtnLabel">Credit or debit card</label>
+            <button id="stripeBtn">Submit Payment</button>
+            <label for="save_card_info">Save for future purchases</label>
+        </form>
+    {% include "order_snippet.html" %}
+{% endblock content %}
