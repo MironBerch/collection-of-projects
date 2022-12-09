@@ -19,7 +19,6 @@ CLASS = {
     'в': 'в'
 }
 
-
 async def get_range(class_letter: str, year_study: str) -> str:
     page = YEAR[year_study]
     class_letter = CLASS[class_letter]
@@ -44,7 +43,7 @@ async def view_xlsx(values_range: str):
     service = apiclient.discovery.build('sheets', 'v4', http = httpAuth)
     values = service.spreadsheets().values().get(
         spreadsheetId=spreadsheet_id,
-        range=values_range,#range='Лист9!B1:G42',
+        range=values_range,
         majorDimension='COLUMNS'
     ).execute()
     values = values['values']

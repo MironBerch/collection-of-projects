@@ -1,3 +1,1 @@
-settings = {
-    'TOKEN': '',
-}
+settings = {'TOKEN': '',}
