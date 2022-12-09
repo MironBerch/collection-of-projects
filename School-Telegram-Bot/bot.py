@@ -1,7 +1,6 @@
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram import types, Bot, Dispatcher
 from aiogram.utils import executor
-import config
 from aiogram.dispatcher import Dispatcher, FSMContext
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -10,7 +9,7 @@ from googlesheet_table import view_xlsx, get_range
 from table import create_answer
 
 
-bot = Bot(token=config.settings["TOKEN"])
+bot = Bot(token='')
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
