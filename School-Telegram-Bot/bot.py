@@ -31,7 +31,7 @@ async def get_scholl_class(message: types.Message, state: FSMContext):
     data = await message_parse(data = await state.get_data())
     values_range = await get_range(class_letter=data['class_letter'], year_study=data['year_study'])
     xlsx = await view_xlsx(values_range=values_range)
-    time_table = await create_answer(xlsx)# todo: объеденить xlsx and time table func
+    time_table = await create_answer(xlsx)
     await message.answer(time_table)
     await state.finish()
 
