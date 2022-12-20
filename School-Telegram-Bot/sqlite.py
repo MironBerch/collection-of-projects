@@ -1,5 +1,4 @@
 import sqlite3 as sql
-from bot import bot
 
 
 def sql_start():
@@ -18,6 +17,10 @@ async def add_timetable_changes(state):
         base.commit()
 
 
-async def read_timetable_changes(message):
-    for obj in cursor.execute('SELECT * FROM changes').fetchall():
-        await bot.send_photo(message.from_user.id, obj[0], obj[1])
+#async def read_timetable_changes(message):
+    #for obj in cursor.execute('SELECT * FROM changes').fetchall():
+        #pprint(obj, obj[0], obj[1], '\n')
+        #await bot.send_photo(message.from_user.id, obj[0], obj[1])
+
+    #ls = cursor.execute('SELECT * FROM changes').fetchall()
+    #print(ls[-1])
