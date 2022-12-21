@@ -1,5 +1,5 @@
-# Blog-API [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
-create at 06.11.22
+# School-Telegram-Bot [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+create at 12.12.22
 ## Technology stack:
 Python 3, Aiogram
 ## Steps to be followed for first time use

@@ -5,7 +5,6 @@ async def create_answer(xlsx):
     days = ['\nПонедельник:\n', '\nВторник:\n', '\nСреда:\n', '\nЧетверг:\n', '\nПятница:\n', '\nСубота:\n',]
     day = 0
     start_day_index = [0, 7, 14, 21, 28, 35]
-
     for object in range(len(subjects)):
         if object in start_day_index:
             answer.append(days[day])
@@ -16,5 +15,4 @@ async def create_answer(xlsx):
         answer.append('\n')
 
     s = ''.join(answer)
-    
     return s

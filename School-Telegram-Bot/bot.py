@@ -8,6 +8,7 @@ from parse import message_parse
 from googlesheet_table import view_xlsx, get_range
 from table import create_answer
 import sqlite3 as sql
+from kb import main_menu
 
 
 bot = Bot(token='5773486947:AAF-MNZlIq7_y3Zlbu4tqbAKnj465mbVchA')
@@ -31,31 +32,31 @@ async def add_timetable_changes(state):
         base.commit()
 
 
-#async def read_timetable_changes(message):
-#    for obj in cursor.execute('SELECT * FROM changes').fetchall():
-#        #print(obj, '\n', obj[1], '\n', obj[0])
-#        await bot.send_photo(message.from_user.id, obj[1], f'Изменения на {obj[0]}')
-
-#async def read_timetable_changes(message):
-    #for obj in cursor.execute('SELECT * FROM changes').fetchall():
-        #print(obj, obj[0], obj[1], '\n')
-        #await bot.send_photo(message.from_user.id, obj[0], obj[1])
-
-    #last_changes = cursor.execute('SELECT * FROM changes').fetchall()[-1]
-    #await bot.send_photo(message.from_user.id, last_changes[0], last_changes[1])
-    #print(ls)
-
-
-
 sql_start()
 
 
-@dp.message_handler(commands=['изменения'])
+@dp.message_handler(commands=['start', 'help'])
+async def start_menu(message: types.Message):
+    start_message: str = (
+        f'Здравствуйте. Это телеграм бот 426 гимназии.\n'
+        f'Он поможет узнать расписание уроков и последнии\n'
+        f'изменения в школьном расписании.\n'
+        f'   КОМАНДЫ ДЛЯ ЧАТ-БОТА:\n\n'
+        f'/расписание - команда для просмотра расписания.\n'
+        f'После ввода команды потребуется вручную слитно\n'
+        f'ввести год обучения и букву класса.\n'
+        f'/просмотреть_изменения - команда для просмотра\n'
+        f'последних изменений в расписании.'
+        f'/start или /help команды для просмотра описания'
+        f'возможностей телеграм бота.'
+    )
+    await bot.send_message(message.from_user.id, start_message, reply_markup=main_menu)
+    
+
+@dp.message_handler(commands=['просмотреть_изменения'])
 async def view_timetablechanges(message: types.Message):
-    #await read_timetable_changes(message)
     last_changes = cursor.execute('SELECT * FROM changes').fetchall()[-1]
-    print(last_changes)
-    await bot.send_photo(message.from_user.id, last_changes[1], last_changes[0])
+    await bot.send_photo(message.from_user.id, last_changes[1], last_changes[0], reply_markup=main_menu)
 
 
 class TimetableChanges(StatesGroup):
@@ -80,7 +81,7 @@ async def get_scholl_class(message: types.Message, state: FSMContext):
     values_range = await get_range(class_letter=data['class_letter'], year_study=data['year_study'])
     xlsx = await view_xlsx(values_range=values_range)
     time_table = await create_answer(xlsx)
-    await message.answer(time_table)
+    await message.answer(time_table, reply_markup=main_menu)
     await state.finish()
 
 
@@ -102,7 +103,6 @@ async def get_timetable_changes_photo(message: types.Message, state: FSMContext)
     await state.update_data(photo=message.photo[0].file_id)
     data = await state.get_data()
     await message.answer(f"Имя: {data['date']}\n"f"Адрес: {data['photo']}")
-    await message.answer(str(data))
     await add_timetable_changes(state)
     await state.finish()
 
