@@ -41,7 +41,7 @@ async def start_menu(message: types.Message):
         f'Здравствуйте. Это телеграм бот 426 гимназии.\n'
         f'Он поможет узнать расписание уроков и последнии\n'
         f'изменения в школьном расписании.\n'
-        f'   КОМАНДЫ ДЛЯ ЧАТ-БОТА:\n\n'
+        f'КОМАНДЫ ДЛЯ ЧАТ-БОТА:\n\n'
         f'/расписание - команда для просмотра расписания.\n'
         f'После ввода команды потребуется вручную слитно\n'
         f'ввести год обучения и букву класса.\n'
@@ -53,7 +53,7 @@ async def start_menu(message: types.Message):
     await bot.send_message(message.from_user.id, start_message, reply_markup=main_menu)
     
 
-@dp.message_handler(commands=['просмотреть_изменения'])
+@dp.message_handler(commands=['просмотреть_изменения', 'changes'])
 async def view_timetablechanges(message: types.Message):
     last_changes = cursor.execute('SELECT * FROM changes').fetchall()[-1]
     await bot.send_photo(message.from_user.id, last_changes[1], last_changes[0], reply_markup=main_menu)
@@ -68,7 +68,7 @@ class Timetable(StatesGroup):
     scholl_class = State()
     
 
-@dp.message_handler(commands=['расписание'])
+@dp.message_handler(commands=['расписание', 'timetable'])
 async def start_timetable_search(message: types.Message):
     await message.answer("Теперь введите класс.")
     await Timetable.scholl_class.set()
