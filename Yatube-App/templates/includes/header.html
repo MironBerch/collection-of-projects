@@ -1,0 +1,31 @@
+{% load static %}
+{% with request.resolver_match.view_name as view_name %}
+    <header>
+        <nav class="navbar navbar-light" style="background-color: lightskyblue">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'index' %}">Yatube</a>
+                <ul class="nav nav-pills">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if view_name == 'post_create' %}active{% endif %}" href="{% url 'post_create' %}">Новая запись</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-light {% if view_name == 'password_change' %}active{% endif %}" href="{% url 'password_change' %}">Изменить пароль</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-light {% if view_name == 'logout' %}active{% endif %}" href="{% url 'logout' %}">Выйти</a>
+                    </li>
+                    <li>Пользователь: {{ user.username }}</li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link link-light {% if view_name == 'login' %}active{% endif %}"href="{% url 'login' %}">Войти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-light {% if view_name == 'signup' %}active{% endif %}" href="{% url 'signup' %}">Регистрация</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+{% endwith %}
