@@ -1,8 +1,8 @@
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from blog.models import Post
-from blog.serializers import PostSerializer
+from api.models import Post
+from api.serializers import PostSerializer
 
 
 class PostListView(ListAPIView):

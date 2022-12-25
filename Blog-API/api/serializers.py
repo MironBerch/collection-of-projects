@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from blog.models import Post, Category
+from api.models import Post, Category
 
 
 class CategorySerializer(serializers.ModelSerializer):
