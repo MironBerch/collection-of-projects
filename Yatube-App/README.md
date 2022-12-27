@@ -1,5 +1,5 @@
 # Yatube-App [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
-create at 23.12.22
+create at 27.12.22
 ## Technology stack:
 HTML, CSS, Python 3, Django 4
 ## Steps to be followed for first time use
