@@ -1,4 +1,3 @@
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram import types, Bot, Dispatcher
 from aiogram.utils import executor
 from aiogram.dispatcher import Dispatcher, FSMContext
@@ -103,7 +102,8 @@ async def start_menu(message: types.Message):
         f'КОМАНДЫ ДЛЯ ЧАТ-БОТА:\n'
         f'  /расписание - команда для просмотра\n'
         f'расписания. После ввода команды потребуется\n'
-        f'вручную слитно ввести год обучения и букву класса.\n'
+        f'вручную слитно ввести год обучения и \n'
+        f'букву класса. В формате: 9В.\n'
         f'  /просмотреть_изменения - команда для\n'
         f'просмотра последних изменений в расписании.'
         f'  /start или /help команды для просмотра'
