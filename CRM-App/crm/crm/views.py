@@ -56,24 +56,36 @@ class AgentCreateView(View, OrganisorAndLoginRequiredMixin):
             user.set_password(f'{random.randint(0, 1000000)}')
             user.save()
             Agent.objects.create(user=user, organisation=self.request.user.userprofile)
-            
+            return redirect('agent-list')
+        return redirect('agent-create')
 
 
 class AgentListView(View, OrganisorAndLoginRequiredMixin):
     def get(self, request):
         organisation = self.request.user.userprofile
-        object_list = Agent.objects.filter(organisation=organisation)
+        agent = Agent.objects.filter(organisation=organisation)
         context = {
-            'object_list': object_list,
+            'agent': agent,
         }
-        return render(request, 'agents/agent_list.html', context)
+        return render(request, 'agents/agent_detail.html', context)
 
 
 class AgentListView(View, OrganisorAndLoginRequiredMixin):
     def get(self, request):
-        organisation = self.request.user.userprofile
-        object_list = Agent.objects.filter(organisation=organisation)
+        form = AgentModelForm(request.POST)
         context = {
-            'object_list': object_list,
+            'form': form,
         }
-        return render(request, 'agents/agent_list.html', context)
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            username = form.cleaned_data.get('username')
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            user = form.save(commit=False)
+            user.is_agent = True
+            user.is_orgaisor = False
+            user.set_password(f'{random.randint(0, 1000000)}')
+            user.save()
+            Agent.objects.create(user=user, organisation=self.request.user.userprofile)
+            return redirect('agent-list')
+        return redirect('agent-create')
