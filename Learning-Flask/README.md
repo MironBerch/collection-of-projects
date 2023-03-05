@@ -1,0 +1,1 @@
+mini flask app. which i create for learning flask 

@@ -1,0 +1,9 @@
+{% for message in get_flashed_messages() %}
+    {{ message }}
+{% endfor %}
+
+<form action='/contact' method='post'>
+    text 
+    <input type='text' name='text' value='' required>
+    <button type='submit'>button</button>
+</form>
