@@ -1,0 +1,7 @@
+{% for notification in notifications %}
+    {{ notification.user }}
+    {{ notification.content }}
+    {{ notification.is_seen }}
+{% endfor %}
+<a href="{% url 'read_notifications' %}">read all</a>
+<a href="{% url 'delete_notifications' %}">delete all</a>

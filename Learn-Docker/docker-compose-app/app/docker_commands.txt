@@ -1,0 +1,8 @@
+
+
+cd docker-compose-app
+docker-compose up
+docker container prune
+docker-compose up -d --build
+docker logs id
+docker-compose down

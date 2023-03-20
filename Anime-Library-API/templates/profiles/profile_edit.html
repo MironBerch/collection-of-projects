@@ -1,0 +1,7 @@
+<h1>Profile edit</h1>
+
+<form method="post" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Edit</button>
+</form>

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Signout {{ block.super }} {% endblock %}
+{% load add_class %}
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <div class="text-center card-header"><h4>Do you want sign out?</h4></div>
+            <br>
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Yes, I do.</button>
+                    <a href="" class="btn btn-primary">No, I don't.</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,18 @@
+{{ user.username }}
+{% if profile.profile_image %}<img src="{{ profile.profile_image.url }}">{% endif %}
+{{ profile.birthday }}
+{{ profile.gender }}
+{{ profile.description }}
+
+<form method="post" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Post</button>
+</form>
+
+
+{% for comment in comments %}
+    {{ comment.date }}
+    {{ comment.author }}
+    {{ comment.content }}
+{% endfor %}
