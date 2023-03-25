@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Регистрация{% endblock %}
+{% load static %}
+{% block static %}
+<link rel="stylesheet" href="{% static 'pages/form.css' %}">
+{% endblock %}
+{% load add_class %}
+{% block content %}
+<div class="main__header">
+<h1 class="main__title">Регистрация</h1>
+</div>
+<div class="form-container">
+    <form class="form" method="post" action="{% url 'signup' %}">
+        {% csrf_token %}
+        <div class="form__group">
+            <label for="{{ form.first_name.id_for_label }}" class="form__label">Имя</label>
+            <div class="form__field-group">
+                {{ form.first_name|addclass:"form__input" }}
+                <span class="form__error">{{ form.first_name.errors }}</span>
+            </div>
+        </div>
+        <div class="form__group">
+            <label for="{{ form.username.id_for_label }}" class="form__label">Имя пользователя</label>
+            <div class="form__field-group">
+                {{ form.username|addclass:"form__input" }}
+                <span class="form__error">{{ form.username.errors }}
+                </span>
+            </div>
+        </div>
+        <div class="form__group">
+            <label for="{{ form.email.id_for_label }}" class="form__label">Адрес электронной почты</label>
+            <div class="form__field-group">
+                {{ form.email|addclass:"form__input" }}
+                <span class="form__error">{{ form.email.errors }}</span>
+            </div>
+        </div>
+        <div class="form__group">
+            <label for="{{ form.password1.id_for_label }}" class="form__label">Пароль</label>
+            <div class="form__field-group">
+                {{ form.password1|addclass:"form__input" }}
+                <span class="form__error">{{ form.password1.errors }}</span>
+            </div>
+        </div>
+        <div class="form__group">
+            <label for="{{ form.password2.id_for_label }}" class="form__label">Повторите пароль</label>
+            <div class="form__field-group">
+                {{ form.password2|addclass:"form__input" }}
+                <span class="form__error">{{ form.password2.errors }}</span>
+            </div>
+        </div>
+        <div class="form__footer">
+            <button class="button button_style_blue">Создать аккаунт</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

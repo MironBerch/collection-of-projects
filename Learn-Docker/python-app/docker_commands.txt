@@ -1,5 +1,0 @@
-docker run -v ${PWD}:/usr/share/nginx/html nginx
-
-cd python-app
-docker build . -t python-docker
-docker run -it python-docker

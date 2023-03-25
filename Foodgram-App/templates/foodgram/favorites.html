@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Избранное{% endblock %}
+
+{% load static %}
+{% block static %}
+<link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main__header">
+    <h1 class="main__title">Избранное</h1>
+    {% include 'foodgram/components/tags.html' %}
+</div>
+
+{% csrf_token %}
+<div class="card-list">
+    {% for recipe in page %}
+        <div class="card" data-id="{{ recipe.id }}">
+            {% load thumbnail %}
+            {% thumbnail recipe.image "364x240" crop="center" upscale=True as im %}
+            <a href="{% url 'recipe' recipe.author.username recipe.id %}" class="link" target="_blank"><img
+                    src="{{ im.url }}" alt="{{ recipe.title }}" class="card__image"></a>
+            {% endthumbnail %}
+            <div class="card__body">
+                <a class="card__title link" href="{% url 'recipe' recipe.author.username recipe.id %}"
+                    target="_blank">{{ recipe.title }}</a>
+                <ul class="card__items">
+                    {% if "lunch" in recipe.tags %}
+                        <li class="card__item"><span class="badge badge_style_green">Обед</span></li>
+                    {% endif %}
+                    {% if "breakfast" in recipe.tags %}
+                        <li class="card__item"><span class="badge badge_style_orange">Завтрак</span></li>
+                    {% endif %}
+                    {% if "dinner" in recipe.tags %}
+                        <li class="card__item"><span class="badge badge_style_purple">Ужин</span></li>
+                    {% endif %}
+                </ul>
+                <div class="card__items card__items_column">
+                    <p class="card__text"><span class="icon-time"></span> {{ recipe.time }} мин.</p>
+                    <p class="card__text"><span class="icon-user"></span> <a href="{% url 'user' recipe.author.username %}" style="color: black">{{ recipe.author.get_full_name }}</a></p>
+                </div>
+            </div>
+            {% if request.user.is_authenticated %}
+            <div class="card__footer">
+                {% load check_atribute %}
+                {% if recipe|check_wishlist:request.user %}
+                    <a href="{% url 'add_wishlist' recipe.author.username recipe.id %}"><button class="button button_style_light-blue-outline" name="purchases"><span class="icon-check button__icon"></span>Рецепт добавлен</button></a>
+                {% else %}
+                    <a href="{% url 'add_wishlist' recipe.author.username recipe.id %}"><button class="button button_style_light-blue" name="purchases" data-out><span class="icon-plus button__icon"></span>Добавить в покупки</button></a>
+                {% endif %}
+                <a href="{% url 'add_to_favorite' recipe.id %}"><button class="button button_style_none" name="favorites"><span class="icon-favorite icon-favorite_active"></span></button></a>
+            </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+{% if page.has_other_pages %}
+    {% include "components/paginator.html" with items=page paginator=paginator %}
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/components/MainCards.js' %}"></script>
+
+<script src="{% static 'js/components/Purchases.js' %}"></script>
+<script src="{% static 'js/components/Favorites.js' %}"></script>
+
+<script src="{% static 'js/config/config.js' %}"></script>
+<script src="{% static 'js/components/CardList.js' %}"></script>
+<script src="{% static 'js/components/Header.js' %}"></script>
+
+<script src="{% static 'js/api/Api.js' %}"></script>
+<script src="{% static 'favorite.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}Рецепты{% endblock %} | Продуктовый помощник</title>
+    {% block static %}
+    <!-- Static -->
+    {% endblock %}
+</head>
+<body class="body">
+    <header class="header">
+        <nav class="nav">
+            <div class="nav__container container">
+                <ul class="nav__items list">
+                    {% url 'index' as index %}
+                        <li class="nav__item {% if request.path  == index %}nav__item_active{% endif %}"><a href="{% url 'index' %}"
+                                class="nav__link link">Рецепты</a></li>
+                        {% if request.user.is_authenticated %}
+                        {% url 'feed' as feed %}
+                        <li class="nav__item {% if request.path  == feed %}nav__item_active{% endif %}"><a href="{% url 'feed' %}"
+                                class="nav__link link">Мои подписки</a></li>
+                        {% url 'new' as new %}
+                        <li class="nav__item {% if request.path  == new %}nav__item_active{% endif %}"><a href="{% url 'new' %}"
+                                class="nav__link link">Создать рецепт</a></li>
+                        {% url 'favorites' as favorites %}
+                        <li class="nav__item {% if request.path  == favorites %}nav__item_active{% endif %}"><a href="{% url 'favorites' %}"
+                                class="nav__link link">Избранное</a></li>
+                        {% url 'wishlist' as wishlist %}
+                        {% load wishlist_count %}
+                        <li class="nav__item {% if request.path  == wishlist %}nav__item_active{% endif %}"><a href="{% url 'wishlist' %}"
+                                class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge"
+                                id="counter">{{ request.user|wishlist_count }}</span></li>
+                    {% endif %}
+                </ul>
+                <ul class="nav__items list">
+                    {% if request.user.is_authenticated %}
+                        <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link link">Выход</a></li>
+                    {% else %}
+                        <li class="nav__item"><a href="{% url 'login' %}" class="nav__link link">Войти</a></li>
+                        <li class="nav__item"><a href="{% url 'signup' %}" class="button button_style_blue">Создать аккаунт</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main class="main container">
+        {% block content %}
+        <!-- Содержимое страницы -->
+        {% endblock %}
+    </main>
+    <footer class="footer">
+        <div class="footer__container container">
+            <a href="{% url 'index' %}" class="footer__brand link">Продуктовый помощник</a>
+        </div>
+    </footer>
+    {% block script %}
+    <!-- Scripts -->
+    {% endblock %}
+</body>
+</html>

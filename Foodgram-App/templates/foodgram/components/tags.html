@@ -1,0 +1,33 @@
+<ul class="tags">
+    {% load set_get_params %}
+    <li class="tags__item">
+        {% if "breakfast" in tags %}
+            <a id="breakfast" class="tags__checkbox tags__checkbox_style_orange tags__checkbox_active"
+                href="?{% set_tags request tags 'breakfast' %}"></a>
+        {% else %}
+            <a id="breakfast" class="tags__checkbox tags__checkbox_style_orange tags__checkbox"
+                href="?{% set_tags request tags 'breakfast' %}"></a>
+        {% endif %}
+        <span class="tags__label">Завтрак</span>
+    </li>
+    <li class="tags__item">
+        {% if "lunch" in tags %}
+            <a id="lunch" class="tags__checkbox tags__checkbox_style_green tags__checkbox_active"
+                href="?{% set_tags request tags 'lunch' %}"></a>
+        {% else %}
+            <a id="lunch" class="tags__checkbox tags__checkbox_style_green tags__checkbox"
+                href="?{% set_tags request tags 'lunch' %}"></a>
+        {% endif %}
+        <span for="lunch" class="tags__label">Обед</span>
+    </li>
+    <li class="tags__item">
+        {% if "dinner" in tags %}
+            <a id="dinner" class="tags__checkbox tags__checkbox_style_purple tags__checkbox_active"
+                href="?{% set_tags request tags 'dinner' %}"></a>
+        {% else %}
+            <a id="dinner" class="tags__checkbox tags__checkbox_style_purple tags__checkbox"
+                href="?{% set_tags request tags 'dinner' %}"></a>
+        {% endif %}
+        <label for="dinner" class="tags__label">Ужин</label>
+    </li>
+</ul>

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Рецепты{% endblock %}
+
+{% load static %}
+{% block static %}
+<link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main__header">
+    <h1 class="main__title">Рецепты</h1>
+    {% include 'foodgram/components/tags.html' %}
+</div>
+
+{% csrf_token %}
+<div class="card-list">
+    {% for recipe in page %}
+        {% include 'foodgram/components/recipe.html' %}
+    {% endfor %}
+</div>
+
+
+{% if page.has_other_pages %}
+    {% include "foodgram/components/paginator.html" with items=page paginator=paginator %}
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/components/MainCards.js' %}"></script>
+
+<script src="{% static 'js/components/Purchases.js' %}"></script>
+<script src="{% static 'js/components/Favorites.js' %}"></script>
+
+<script src="{% static 'js/config/config.js' %}"></script>
+<script src="{% static 'js/components/CardList.js' %}"></script>
+<script src="{% static 'js/components/Header.js' %}"></script>
+
+<script src="{% static 'js/api/Api.js' %}"></script>
+{% if user.is_authenticated %}
+    <script src="{% static 'indexAuth.js' %}"></script>
+{% else %}
+    <script src="{% static 'indexNotAuth.js' %}"></script>
+{% endif %}
+{% endblock %}
