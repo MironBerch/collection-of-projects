@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Delete task {{ block.super }} {% endblock %}
+{% block content %}
+    <div class="header-bar">
+        <a href="{% url 'home' %}">&#8592; Go Back</a>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            <h3>Are your sure you want to delete this task? </h3>
+            <input class="button" type="submit" value="Delete" />
+        </form>
+    </div>
+{% endblock content %}
