@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="columns is-mobile">
+  <div class="column is-half is-offset-one-quarter">
+    <div class="card">
+      <div class="card-content">
+        <h3 class="title is-3">Edit Profile</h3>
+        <form action="" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div>
+              <div>
+                  <label for="">Choose your picture</label>
+                  {% if user_profile.picture %}
+                      <img width="100" height="100" src="{{user_profile.picture.url}}">
+                  {% else %}
+                      <h5>No avatar</h5>
+                  {% endif %}
+                  <input type="file" name="picture" value="">
+              </div>
+              <div class="mb-3">
+                  <label class="label is-medium">First name</label>
+                  <textarea id="first_name" name="first_name" class="input is-primary">{{user_profile.first_name}}</textarea>
+              </div>
+              <div class="mb-3">
+                  <label class="label is-medium">Last name</label>
+                  <textarea id="last_name" name="last_name" class="input is-primary">{{user_profile.last_name}}</textarea>
+              </div>
+              <div class="mb-3">
+                  <label class="label is-medium">Url</label>
+                  <textarea id="url" name="url" class="input is-primary">{{user_profile.url}}</textarea>
+              </div>
+              <div class="mb-3">
+                <label class="label is-medium">Profile info</label>
+                <textarea id="profile_info" name="profile_info" class="input is-primary" type="text">{{user_profile.profile_info}}</textarea>
+              </div>
+          </div>
+          <div class="field"><p class="control"><button type="submit" value="login" class="button is-success">Update</button></p></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
