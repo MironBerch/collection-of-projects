@@ -35,6 +35,6 @@ models.Base.metadata.create_all(engine)
 
 app.mount(
     '/images', 
-    StaticFiles(directory='images'),
+    StaticFiles(directory='images',),
     name='images',
 )
