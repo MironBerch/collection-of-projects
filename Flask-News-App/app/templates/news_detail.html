@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ news.title }}
+{% endblock title %}
+{% block content %}
+  <h1>{{ news.title }}</h1>
+  {% if news.created_date %}
+    <span>Дата создания: </span><span class="badge badge-primary">{{ news.created_date.strftime('%d.%m.%Y') }}</span>
+  {% endif %}
+  {% if news.category %}
+    <span>Категория: <a href="{{ url_for('news_in_category', id=news.category.id) }}" class="badge badge-primary">{{ news.category.title }}</a></span>
+  {% endif %}
+  <hr>
+  <p>{{ news.text }}</p>
+{% endblock content %}

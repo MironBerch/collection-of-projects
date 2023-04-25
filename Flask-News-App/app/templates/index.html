@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}
+  Главная страница
+{% endblock title %}
+{% block content %}
+  <h1>Главная</h1>
+  <hr>
+  {% for news in news %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ news.title }}</h5>
+      <p class="card-text">{{ news.text|truncate(100) }}</p>
+      <a href="{{ url_for('news_detail', id=news.id) }}" class="btn btn-primary">Читать далее</a>
+    </div>
+    <div class="card-footer">
+      {% if news.created_date %}
+        <span class="card-link">Дата создания: {{ news.created_date.strftime('%d.%m.%Y') }}</span>
+      {% endif %}
+      {% if news.category %}
+        <span class="card-link">Категория: <a href="{{ url_for('news_in_category', id=news.category.id) }}">{{ news.category.title }}</a></span>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}
+  <p class="card-text">Новостей пока нет!</p>
+  {% endfor %}
+{% endblock content %}

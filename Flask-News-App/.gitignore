@@ -1,0 +1,10 @@
+# base
+*.pyc
+
+
+# env data
+.venv
+env*
+venv*
+venv/
+.env
