@@ -1,3 +1,39 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from . import models
+from .database import engine
+from .routers import post, user, auth, vote
+from .config import settings
+
+
+app = FastAPI()
+
+origins = ['*']
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
+
+app.include_router(post.router)
+app.include_router(user.router)
+app.include_router(auth.router)
+app.include_router(vote.router)
+
+
+@app.get('/')
+def root():
+    return {
+        'message': 'Hello World pushing out to ubuntu',
+    }
+
+
+
+"""
 from typing import Optional
 from random import randrange
 
@@ -45,7 +81,7 @@ def find_post(id):
             return i
 
 
-@app.get('/post/latest')
+@app.get('/posts/latest')
 def get_latest_post(response: Response):
     try:
         post = posts[-1] #osts[len(posts)-1]
@@ -54,7 +90,7 @@ def get_latest_post(response: Response):
         response.status_code = status.HTTP_404_NOT_FOUND
 
 
-@app.get('/post/{id}')
+@app.get('/posts/{id}')
 async def get_post(id: int, response: Response):
     post = find_post(id)
     if not post:
@@ -72,8 +108,28 @@ def find_index_post(id):
             return i
 
 
-@app.delete('/post/del/{id}')
+@app.delete('/posts/{id}')
 def delete_post(id: int):
     index = find_index_post(id)
+    if index == None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f'not found',
+        )
     posts.pop(index)
     return {'message': 'post deleted'}
+
+
+@app.put('/posts/{id}')
+def update_post(id: int, post: Post):
+    index = find_index_post(id)
+    if index == None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f'not found',
+        )
+    post_dict = post.dict()
+    post_dict['id'] = id
+    posts[index] = post_dict
+    return {'data': post_dict}
+"""
