@@ -1,6 +1,8 @@
 from typing import Optional
 
-from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
+from fastapi import (
+    Response, status, HTTPException, Depends, APIRouter,
+)
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
