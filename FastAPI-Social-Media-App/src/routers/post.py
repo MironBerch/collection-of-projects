@@ -37,12 +37,13 @@ def get_posts(
     ).filter(
         models.Post.title.contains(
             search,
-        ).limit(
-            limit,
-        ).offset(
-            skip,
-        ).all()
-    )
+        )
+    ).limit(
+        limit,
+    ).offset(
+        skip,
+    ).all()
+    
     return posts
 
 
