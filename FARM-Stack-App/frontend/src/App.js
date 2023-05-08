@@ -22,16 +22,15 @@ function App() {
 
     return (
         <div>
-            <h1>Task Manager</h1>
-            <h6>FASTAPI - React - MongoDB</h6>
+            <h1>Full Stask Task Manager</h1>
             <div>
-                <h5>Add Your Task</h5>
+                <h5>Add Tasks</h5>
                 <span> 
                     <input onChange={event => setTitle(event.target.value)} placeholder='Title'/> 
                     <input onChange={event => setDesc(event.target.value)}   placeholder='Description'/>
                     <button onClick={addTodoHandler}>Add Task</button>
                 </span>
-                <h5>Your Tasks</h5>
+                <h5>Tasks</h5>
                 <div>
                     <TodoView todoList={todoList} />
                 </div>
