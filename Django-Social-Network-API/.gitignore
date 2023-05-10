@@ -1,0 +1,23 @@
+# base
+*.pyc
+*.sqlite3
+__pycache__/
+
+
+# env data
+.venv
+venv
+env
+env.dev
+env.prod
+env*
+venv*
+venv/
+.env
+.env.dev
+.env.prod
+
+# media
+*.xlsx
+media/students
+media/diplom_scans
