@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Просмотр мероприятий {{ block.super }} {% endblock %}
+{% load add_class %}
+{% block content %}
+    {% include 'includes/navbar.html' %}
+    <br>
+    <div class="d-grid">
+        <a href="{% url 'export' %}" class="btn btn-primary" type="button" style="margin-bottom: 10px;">Экспортировать</a>
+        <a href="{% url 'create' %}" class="btn btn-primary" type="button">Создать</a>
+    </div>
+    <br>
+    {% for contest in contests %}
+        <div class="card" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">{{contest.title}}</h5>
+                <p class="card-text">
+                    Участвовал: <a href="{% url 'student_view' contest.student.id %}">{{ contest.student }}</a><br>
+                    Педагог: {% if contest.teachers_name %}{{ contest.teachers_name }}{% else %}Нет{% endif %}<br>
+                    Результат: {{ contest.result }}<br>
+                    Дата мероприятия: {{ contest.event_date }}<br>
+                    Дата учёта мероприятия: {{ contest.creation_date }}</p>
+                <a href="{% url 'detail' contest.id %}" type="button" class="btn btn-outline-primary">Просмотреть</a>
+                <a href="{% url 'update' contest.id %}" type="button" class="btn btn-outline-primary">Изменить</a>
+                <a href="{% url 'delete' contest.id %}" type="button" class="btn btn-outline-primary">Удалить</a>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+{% endblock content %}

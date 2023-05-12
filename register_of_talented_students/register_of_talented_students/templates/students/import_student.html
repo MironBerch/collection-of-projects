@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Загрузить учеников {{ block.super }} {% endblock %}
+{% load add_class %}
+{% block content %}
+    {% include 'includes/navbar.html' %}
+    <div class="card">
+        <div class="card-body">
+            <div class="text-center card-header"><h2>Загрузить учеников в базу данных</h2></div>
+            <form method="post" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div>
+                    {{ form.file|addclass:'form-control form-control-lg' }}
+                    <a href="{% url 'download_students_import_example' %}" class="btn btn-link">Скачать пример</a>
+                    <br>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Загрузить учеников</button>
+                    <a href="{% url 'list' %}" class="btn btn-primary" type="button">Назад</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

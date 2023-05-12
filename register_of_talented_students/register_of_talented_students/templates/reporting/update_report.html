@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Изменить мероприятие {{ block.super }} {% endblock %}
+{% load add_class %}
+{% block content %}
+    {% include 'includes/navbar.html' %}
+    <div class="card">
+        <div class="text-center card-header"><h2>Изменить мероприятие</h2></div>
+        <div class="card-body">
+            <form method="post" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Название мероприятие*</label>
+                    {{ form.title|addclass:'form-control' }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Класс ученика</label>
+                    <select 
+                        class="form-select"
+                        name="school_class"
+                        hx-get="{% url 'render_students_select' %}" 
+                        hx-trigger="change" 
+                        hx-target="#students_select">
+                            <option value="{{ class }}">{{ contest.student.school_class }}</option>
+                            {% for class in classes %}
+                                <option value="{{ class }}">{{ class }}</option>
+                            {% endfor %}
+                    </select>
+                </div>
+                <div id="students_select">
+                    {% include 'includes/students_select.html' %}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">ФИО руководителя</label>
+                    {{ form.teachers_name|addclass:'form-control' }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Дата мероприятия*</label>
+                    {{ form.event_date|addclass:'form-control' }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Предмет*</label>
+                    {{ form.subject|addclass:'form-control' }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Этап*</label>
+                    {{ form.stage|addclass:'form-select' }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Направление*</label>
+                    {{ form.direction|addclass:'form-select' }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Результат*</label>
+                    {{ form.result|addclass:'form-select' }}
+                </div>
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Скан диплома</label>
+                    <p>{% if contest.scan_diploma %} <a href="{{ contest.scan_diploma.url }}">просмотреть</a>{% else %} нет скана диплома {% endif %}</p>
+                    {{ form.scan_diploma|addclass:'form-control' }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Комментарий</label>
+                    {{ form.other|addclass:'form-control' }}
+                </div>
+                <div class="container text-center">
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Сохранить изменения записи</button>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'list' %}" class="btn btn-primary" type="button">Назад</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://unpkg.com/htmx.org@1.6.0"></script>
+{% endblock content %}

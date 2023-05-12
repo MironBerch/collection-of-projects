@@ -1,0 +1,13 @@
+<div class="mb-3" id="students_select">
+    <label class="form-label">ФИО ученика*</label>
+    <select class="form-select" name="reporting_student">
+        {% if contest.student %}
+            <option value="{{ contest.student }}" selected>{{ contest.student }}</option>
+        {% else %}
+            <option selected>---------</option>
+        {% endif %}
+        {% for student in students %}
+            <option value="{{ student.full_name }}">{{ student }}</option>
+        {% endfor %}
+    </select>
+</div>

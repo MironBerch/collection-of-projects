@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Просмотр мероприятия {{ block.super }} {% endblock %}
+{% load add_class %}
+{% block content %}
+    {% include 'includes/navbar.html' %}
+    <div class="card">
+        <div class="text-center card-header"><h2>Просмотр мероприятия</h2></div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Название мероприятие: {{ contest.title }}</label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">ФИО ученика: <a href="{% url 'student_view' contest.student.id %}">{{ contest.student }}</a></label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">ФИО руководителя: {% if contest.teachers_name %}{{ contest.teachers_name }}{% else %}Нет{% endif %}</label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Дата мероприятия: {{ contest.event_date }}</label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Дата учёта мероприятия: {{ contest.creation_date }}</label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Дата последнего изменения мероприятия: {{ contest.modified_date }}</label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Предмет: {{ contest.subject }}</label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Класс: {{ contest.student.school_class }}</label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Этап: {{ contest.stage }}</label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Направление: {{ contest.direction }}</label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Результат: {{ contest.result }}</label>
+            </div>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Скан диплома: {% if contest.scan_diploma %} <a href="{{ contest.scan_diploma.url }}">просмотреть</a>{% else %} <p>нет скана диплома</p>{% endif %}</label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Комментарий: {{ contest.other }}</label>
+            </div>
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col">
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'update' contest.id %}" class="btn btn-primary" type="button">Изменить мероприятие</a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'list' %}" class="btn btn-primary" type="button">Назад</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

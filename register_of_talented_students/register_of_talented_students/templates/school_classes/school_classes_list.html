@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Просмотр мероприятий {{ block.super }} {% endblock %}
+{% load add_index %}
+{% block content %}
+    {% include 'includes/navbar.html' %}
+    <h1 class="text-center">Школьные классы</h1>
+    <br>
+    <table class="table">
+        <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Название</th>
+              <th scope="col">Кол-во учащихся</th>
+              <th scope="col">Ссылка</th>
+            </tr>
+        </thead>
+        {% for class in school_classes %}
+            <tbody>
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ class.school_class }}</td>
+                <td>{{ numbers_of_school_classes|index:forloop.counter0 }}</td>
+                <td><a href="{% url 'school_classes_students' class.school_class %}">посмотреть учащихся</a></td>
+              </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Выход {{ block.super }} {% endblock %}
+{% load add_class %}
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <div class="text-center card-header"><h4>Вы действительно хотите выйти из аккаунта?</h4></div>
+            <br>
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Да, я хочу выйти</button>
+                    <a href="{% url 'list' %}" class="btn btn-primary">Нет, не хочу</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Вход {{ block.super }} {% endblock %}
+{% load add_class %}
+{% block content %}
+    {% for message in messages %}
+        <div class="message text-center alert alert-primary" style="margin-top: 5px; margin-bottom: 5px">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div class="card">
+        <div class="card-body">
+            <div class="text-center card-header"><h4>Вход</h4></div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="InputEmail" class="form-label">Почта*</label>
+                    {{ form.email|addclass:'form-control' }}
+                </div>
+                <div class="mb-3">
+                    <label for="InputPassword" class="form-label">Пароль*</label>
+                    {{ form.password|addclass:'form-control' }}
+                </div>
+                <button type="submit" class="btn btn-primary">Вход</button>
+            </form>
+            <p>Нет аккаунта? <a href="{% url 'signup' %}">Регистрация</a></p>
+        </div>
+    </div>
+{% endblock content %}

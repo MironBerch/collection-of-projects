@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} Просмотр бывших учеников {{ block.super }} {% endblock %}
+{% block content %}
+    {% include 'includes/navbar.html' %}
+    <h1 class="text-center">Просмотр бывших учеников</h1>
+    <br>
+    <table class="table">
+        <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">ФИО</th>
+              <th scope="col"></th>
+              <th scope="col">Ссылка</th>
+            </tr>
+        </thead>
+        {% for student in students %}
+            <tbody>
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ student.full_name }}</td>
+                <td></td>
+                <td><a href="{% url 'student_view' student.id %}">посмотреть учащегося</a></td>
+              </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+{% endblock content %}
