@@ -1,0 +1,20 @@
+<html>
+    <head><title>Signup</title></head>
+    <body>
+        <form method="POST" class="form-group">
+            {% csrf_token %}
+            {{ form.username.label }}
+            {{ form.username }}
+            {{ form.email.label }}
+            {{ form.email }}
+            {{ form.password1.label }}
+            {{ form.password1 }}
+            {{ form.password2.label }}
+            {{ form.password2 }}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+            <button type="submit" class="btn btn-success">Register</button>
+        </form>
+    </body>
+</html>

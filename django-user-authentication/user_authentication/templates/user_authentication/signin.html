@@ -1,0 +1,14 @@
+<html>
+    <head><title>Signin</title></head>
+    <body>
+        <h1>Signin</h1>
+        <form method='POST'>
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+            <button type="submit" class="btn btn-success">Login</button>
+        </form>
+    </body>
+</html>

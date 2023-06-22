@@ -1,0 +1,10 @@
+<html>
+    <head><title>Logout</title></head>
+    <body>
+        <h2>You are want logout?</h2>
+        <form action='' method='POST'>
+            {% csrf_token %}
+            <button type='submit'>Logout</button>
+        </form>
+    </body>
+</html>

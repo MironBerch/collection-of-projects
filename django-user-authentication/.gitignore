@@ -1,0 +1,15 @@
+# IDE files
+.idea/*
+.vscode/*
+
+# base
+*.pyc
+*.pyo
+*.sqlite3
+*.log
+*.pytest_cache
+__pycache__/
+
+# developing apps
+config/
+manage.py
