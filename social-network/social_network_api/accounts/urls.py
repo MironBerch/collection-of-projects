@@ -1,0 +1,74 @@
+from django.urls import path
+
+from accounts.views import (
+    SignupAPIView,
+    SigninAPIView,
+    SignoutAPIView,
+    EditPasswordAPIView,
+    EditProfileAPIView,
+    EditUserAPIView,
+    FollowersAPIView,
+    FollowingAPIView,
+    LongRecommendedUsersAPIView,
+    RecommendedUsersAPIView,
+    UserDetailAPIView,
+)
+
+
+urlpatterns = [
+    path(
+        route='signup/',
+        view=SignupAPIView.as_view(),
+        name='signup',
+    ),
+    path(
+        route='signin/',
+        view=SigninAPIView.as_view(),
+        name='signin',
+    ),
+    path(
+        route='signout/',
+        view=SignoutAPIView.as_view(),
+        name='signout',
+    ),
+    path(
+        route='edit-password/',
+        view=EditPasswordAPIView.as_view(),
+        name='edit_password',
+    ),
+    path(
+        route='edit-profile/',
+        view=EditProfileAPIView.as_view(),
+        name='edit_profile',
+    ),
+    path(
+        route='edit-user/',
+        view=EditUserAPIView.as_view(),
+        name='edit_user',
+    ),
+    path(
+        route='long-recommended-users/',
+        view=LongRecommendedUsersAPIView.as_view(),
+        name='long_recommended_users',
+    ),
+    path(
+        route='recommended-users/',
+        view=RecommendedUsersAPIView.as_view(),
+        name='recommended_users',
+    ),
+    path(
+        route='<str:username>/',
+        view=UserDetailAPIView.as_view(),
+        name='user_detail',
+    ),
+    path(
+        route='<str:username>/following/',
+        view=FollowingAPIView.as_view(),
+        name='following',
+    ),
+    path(
+        route='<str:username>/followers/',
+        view=FollowersAPIView.as_view(),
+        name='followers',
+    ),
+]
