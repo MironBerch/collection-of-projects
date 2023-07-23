@@ -1,0 +1,19 @@
+# IDE files #
+.idea/*
+.vscode/*
+
+
+# env data #
+.venv
+.env
+
+
+# Backend #
+
+*.pyc
+__pycache__/
+
+
+# Frontend #
+
+node_modules/
