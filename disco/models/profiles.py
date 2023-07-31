@@ -1,7 +1,7 @@
 from sqlalchemy import Integer, Table, Column, String, LargeBinary, ForeignKey, Text
 from sqlalchemy.orm import declarative_base
 
-from .users import metadata, User
+from .users import metadata
 
 Base = declarative_base(metadata=metadata)
 
@@ -12,7 +12,6 @@ profile = Table(
     Column("user_id", Integer, ForeignKey("users.id")),
     Column("text", Text, nullable=True),
     Column("image", LargeBinary, nullable=True),
-    Column("banner", LargeBinary, nullable=True),
     Column("pronoun", String, nullable=True)
 )
 
@@ -21,17 +20,20 @@ class Profile(Base):
     __table__ = profile
 
     @classmethod
-    def create(cls, session, name: str, email: str, bio: str) -> "Profile":
-        profile = cls(name=name, email=email, bio=bio)
+    def create(
+        cls, session, user_id: int, text: str = None, pronoun: str = None, image: bytes = None
+    ) -> "Profile":
+        profile = cls(text=text, user_id=user_id, pronoun=pronoun, image=image)
         session.add(profile)
         session.commit()
         session.refresh(profile)
         return profile
 
-    def update(self, session, name: str, email: str, bio: str) -> "Profile":
-        self.name = name
-        self.email = email
-        self.bio = bio
+    def update(self, session, text: str, user_id: int, pronoun: str, image: bytes) -> "Profile":
+        self.text = text
+        self.user_id = user_id
+        self.pronoun = pronoun
+        self.image = image
         session.commit()
         session.refresh(self)
         return self

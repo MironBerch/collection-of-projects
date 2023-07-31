@@ -3,7 +3,10 @@ from typing import Optional
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
 
+from .database import get_async_session
+
 from auth.database import User, get_user_db
+from models.profiles import Profile
 
 SECRET = "SECRET"
 
@@ -15,6 +18,8 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         print(f"User {user.id} has registered.")
         print(f"{user} profile fas been created.")
+        profile = await Profile.create(user_id=user.id, session=get_async_session())
+        print(f"Profile created for user {user.id}: {profile}")
 
     async def create(
         self,
