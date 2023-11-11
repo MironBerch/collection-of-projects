@@ -49,34 +49,20 @@
 
 using namespace declarative;
 
-void fillWindow(_<AViewContainer> t) {
-    t->setLayout(std::make_unique<AStackedLayout>());
-    t->addView(_new<ALabel>("Window contents"));
-}
-
 ExampleWindow::ExampleWindow() : AWindow("Examples", 800_dp, 700_dp) {
     allowDragNDrop();
 
     setLayout(std::make_unique<AVerticalLayout>());
     AStylesheet::global().addRules({ {
-      c(".all_views_wrap") > t<AViewContainer>(),
-      Padding { 16_dp },
+        c(".all_views_wrap") > t<AViewContainer>(),
+        Padding { 16_dp },
     } });
 
-    _<ATabView> tabView;
-    _<AProgressBar> progressBar = _new<AProgressBar>();
-    _<ACircleProgressBar> circleProgressBar = _new<ACircleProgressBar>();
-
-    addView(tabView = _new<ATabView>() let {
-        it->addTab(
-            AScrollArea::Builder().withContents(std::conditional_t<
-                                                aui::platform::current::is_mobile(), Vertical, Horizontal> {
-              Vertical {
-                // buttons
-
-                GroupBox {
-                  Label { "File" },
-                  Vertical {
+    addView(
+        Horizontal {
+            GroupBox {
+                Label { "File" },
+                Vertical {
                     _new<AButton>("Create file"),
                     _new<AButton>("Save file"),
                     _new<AButton>("Open file")
@@ -101,30 +87,24 @@ ExampleWindow::ExampleWindow() : AWindow("Examples", 800_dp, 700_dp) {
                                          }
                                      });
                                  }),
-                  },
-                },
-              },
-              Vertical::Expanding {
-                // fields
+                } with_style { MinSize { 200_dp } },
+            },
 
-                GroupBox {
-                  Label { "Fields" },
-                  Vertical::Expanding {
+            GroupBox {
+                Label { "Fields" },
+                Vertical {
                     Label { "Text area" },
-                    AScrollArea::Builder()
-                            .withContents(_new<ATextArea>(
-                                "AUI Framework - Declarative UI toolkit for modern C++20\n"
-                                "\n"
-                                "SPDX-License-Identifier: MPL-2.0\"") with_style { FontSize { AMetric(12, AMetric::T_PX) } })
-                            .build()
-                        << ".input-field" let { it->setExpanding(); },
-                  } }
-    with_style { Expanding {} } } })
+                    _new<ATextArea>() with_style { 
+                        FontSize { 12_pt },
+                        Expanding {},
+                        BackgroundSolid { AColor::WHITE }
+                    },
+                } with_style { Expanding {} },
+            } with_style { MinSize { 200_dp }, Expanding {} },
+        } with_style { Expanding {}, MinSize { 300_dp } }
     );
-        //  AText::fromString("") with_style { ATextAlign::JUSTIFY },} with_style { MinSize { 200_dp } },
-        //  AText::fromString("", { WordBreak::BREAK_ALL }),} with_style { MinSize { 200_dp } },
-        it->setExpanding();
-    });
+    //  AText::fromString("") with_style { ATextAlign::JUSTIFY },} with_style { MinSize { 200_dp } },
+    //  AText::fromString("", { WordBreak::BREAK_ALL }),} with_style { MinSize { 200_dp } },
 
     addView(Horizontal {
         _new<ASpacerExpanding>(),
