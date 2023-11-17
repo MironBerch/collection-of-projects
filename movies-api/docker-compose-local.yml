@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+
+  admin:
+    restart: always
+    build:
+      context: .
+      dockerfile: configuration/docker/admin/Dockerfile
+    command: >
+      sh -c "cd /app/src/admin/
+      && python manage.py migrate --noinput
+      && python manage.py runserver 0.0.0.0:8000"
+    expose:
+      - 8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - ${ENV}
+    depends_on:
+      - admin_db
+
+  admin_db:
+    build:
+      context: configuration/postgres
+      dockerfile: Dockerfile
+    volumes:
+      - postgres_admin_data:/var/lib/postgresql/data/
+    env_file:
+      - ${ENV}
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${ADMIN_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${ADMIN_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${ADMIN_POSTGRES_DB}
+
+volumes:
+  postgres_admin_data:

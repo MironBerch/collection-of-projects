@@ -1,0 +1,9 @@
+[flake8]
+max-line-length = 100
+ignore =
+    D401, W504
+    # Double quotes found but single quotes preferred
+    Q000
+exclude =
+    .venv*,
+    */migrations/*,
