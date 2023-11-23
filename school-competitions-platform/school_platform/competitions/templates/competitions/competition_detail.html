@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Transaction detail view &bull;
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex align-items-center py-4 bg-body-tertiary">
+        {{ competition.name }}
+        <div style="max-width: 300px;">
+            {{ competition.description|safe }}
+        </div>
+    </div>
+{% endblock %}
