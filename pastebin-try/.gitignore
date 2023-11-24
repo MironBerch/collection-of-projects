@@ -1,0 +1,16 @@
+# IDE files
+
+.idea/*
+.vscode/*
+
+# environment
+
+.venv
+.env
+
+# base
+
+*.pyc
+*.log
+*.pytest_cache
+__pycache__/

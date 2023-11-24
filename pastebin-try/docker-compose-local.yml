@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  api:
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    
+    command: >
+      sh -c "cd /app/ &&
+      alembic upgrade head &&
+      cd /app/src &&
+      uvicorn main:app --reload --host 0.0.0.0 --port 8000"
+    ports:
+      - 8000:8000
+    expose:
+      - 8000
+    env_file:
+      - ${ENV}
+    depends_on:
+      - db
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    env_file:
+      - ${ENV}
+    ports:
+      - "6380:6379"
+
+  celery:
+    restart: always
+    env_file:
+      - ${ENV}
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: >
+      sh -c "cd /app/src
+      && celery --app=main:celery worker -l INFO"
+    links:
+      - redis
+    depends_on:
+      - redis
+      - api
+
+  db:
+    image: postgres:14-alpine
+    restart: always
+    env_file:
+      - ${ENV}
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+        - postgres_volume:/var/lib/postgresql/data/
+
+volumes:
+  postgres_volume:
