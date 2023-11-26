@@ -1,0 +1,14 @@
+# environment
+.venv
+.env
+
+# python
+*.pyc
+*.pyo
+__pycache__/
+
+# database
+db.sqlite3
+
+# media files
+media/

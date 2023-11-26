@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ event.name }} &bull;
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex align-items-center py-4 bg-body-tertiary">
+        {{ event.name }}
+        <a href="{% url 'register_on_event' slug=event.slug %}">Регистрация</a>
+        <div style="max-width: 300px;">
+            {{ event.description|safe }}
+        </div>
+    </div>
+{% endblock %}

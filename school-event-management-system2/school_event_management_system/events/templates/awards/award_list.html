@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Дипломы &bull;
+{% endblock %}
+
+{% block content %}
+    <div style="margin-left: 10px; margin-right: 10px;">
+        <div class="album py-5 bg-body-tertiary">
+            <div class="container">
+                <div class="row g-3">
+                    {% for award in awards %}
+                        <div class="card">
+                            <div class="card-body">
+                                <a href="{{ award.diplom.url }}">{{ award.event }}</a>
+                            </div>
+                            {% for result in award.event.results.all %}
+                                {{ result.result }}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}
+    {{ event.name }} регистрация &bull;
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex align-items-center py-4 bg-body-tertiary">
+        {{ event.name }}
+        <div class="d-flex align-items-center py-4 bg-body-tertiary">
+            <form class="form w-100 m-auto" action="" method="POST">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <button class="btn btn-primary w-100 py-2" style="margin-top: 10px;" type="submit">Сохранить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
