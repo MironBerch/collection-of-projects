@@ -5,3 +5,37 @@ description = "Download pictures (or videos) from X (twitter)"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = []
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+exclude = [".venv"]
+indent-width = 4
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle (PEP8)
+    "F",  # Pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+default-section = "third-party"
+force-wrap-aliases = true
+split-on-trailing-comma = true
+lines-after-imports = 2
+combine-as-imports = true
+order-by-type = true
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.format]
+quote-style = "preserve"
