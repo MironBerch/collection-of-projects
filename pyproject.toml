@@ -1,0 +1,7 @@
+[project]
+name = "yandex-alice-llm-skill"
+version = "0.1.0"
+description = "Yandex Alice skill for integration with chatbots (gpt, deepseek, llama, etc) API"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
