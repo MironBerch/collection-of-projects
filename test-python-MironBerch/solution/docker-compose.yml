@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+
+  api:
+    build: .
+    restart: always
+    environment:
+      - SERVER_ADDRESS=0.0.0.0:8080
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_CONN=postgres://postgres:postgres@db:5432/postgres
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
