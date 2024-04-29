@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+      - "POSTGRES_DB=postgres"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./tests/:/docker-entrypoint-initdb.d
+
+  api:
+    build: .
+    command: >
+      sh -c "cd /app/src/ &&
+      uvicorn main:app --reload --host 0.0.0.0 --port 8080"
+    restart: always
+    volumes:
+      - .:/app
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+      - "POSTGRES_DB=postgres"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
