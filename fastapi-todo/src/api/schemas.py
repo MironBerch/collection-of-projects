@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class CreatePost(BaseModel):
-    text: int
+    text: str
 
     class Config:
         from_attributes = True
@@ -10,7 +10,7 @@ class CreatePost(BaseModel):
 
 class Post(BaseModel):
     id: int
-    text: int
+    text: str
 
     class Config:
         from_attributes = True

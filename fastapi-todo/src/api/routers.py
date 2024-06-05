@@ -17,7 +17,7 @@ async def get_posts(db: AsyncSession = Depends(get_async_session)):
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
-async def create_posts(post: schemas.Post, db: AsyncSession = Depends(get_async_session)):
+async def create_posts(post: schemas.CreatePost, db: AsyncSession = Depends(get_async_session)):
     new_post = Post(**post.model_dump())
     db.add(new_post)
     await db.commit()
@@ -46,7 +46,7 @@ async def delete_post(id: int, db: AsyncSession = Depends(get_async_session)):
 
 
 @router.put('/{id}', response_model=schemas.Post)
-async def update_post(id: int, updated_post: schemas.PostCreate, db: AsyncSession = Depends(get_async_session)):
+async def update_post(id: int, updated_post: schemas.CreatePost, db: AsyncSession = Depends(get_async_session)):
     result = await db.execute(select(Post).where(Post.id == id))
     post = result.scalar_one_or_none()
     if not post:
