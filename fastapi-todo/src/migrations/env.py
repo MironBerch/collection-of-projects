@@ -5,7 +5,8 @@ from sqlalchemy import pool
 
 from alembic import context
 from config import POSTGRES_HOST, POSTGRES_PORT, POSTGRES_USER, POSTGRES_DB, POSTGRES_PASSWORD
-from db import Base
+from models.models import Base
+from models.models import Post, Tag
 
 config = context.config
 

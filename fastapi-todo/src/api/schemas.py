@@ -5,7 +5,7 @@ class CreatePost(BaseModel):
     text: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Post(BaseModel):
@@ -13,4 +13,4 @@ class Post(BaseModel):
     text: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
