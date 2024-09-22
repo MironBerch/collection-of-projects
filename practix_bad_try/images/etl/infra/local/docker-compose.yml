@@ -1,0 +1,109 @@
+version: '3.8'
+
+services:
+
+  movies_db:
+    build: ../../infra/postgres/
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_DB=postgres"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+    volumes:
+        - movies_db_volume:/var/lib/postgresql/data/
+
+  etl_db:
+    image: postgres:16-alpine
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      - "POSTGRES_DB=etl"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+    volumes:
+        - etl_db_volume:/var/lib/postgresql/data/
+
+  etl:
+    restart: always
+    build: ../..
+    command: >
+      sh -c "cd /app/src/
+      && python manage.py migrate --noinput
+      && python manage.py createsuperuser --noinput || true
+      && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ../..:/app
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    environment:
+      - "DJANGO_SUPERUSER_USERNAME=admin"
+      - "DJANGO_SUPERUSER_EMAIL=admin@gmail.com"
+      - "DJANGO_SUPERUSER_PASSWORD=root"
+      - "ETL_SECRET_KEY=secretkey"
+      - "ETL_DEBUG=True"
+      - "ETL_DB_NAME=etl"
+      - "ETL_DB_USER=postgres"
+      - "ETL_DB_PASSWORD=postgres"
+      - "ETL_DB_HOST=etl_db"
+      - "ETL_DB_PORT=5432"
+      - "CELERY_BROKER_URL=redis://redis:6379"
+    depends_on:
+      - etl_db
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6380:6379"
+
+  celery:
+    restart: always
+    build: ../..
+    volumes:
+      - ../..:/app
+    command: >
+      sh -c "cd /app/src/
+      && celery -A config worker --beat -l info"
+    environment:
+      - "ETL_SECRET_KEY=secretkey"
+      - "ETL_DEBUG=True"
+      - "ETL_DB_NAME=etl"
+      - "ETL_DB_USER=postgres"
+      - "ETL_DB_PASSWORD=postgres"
+      - "ETL_DB_HOST=etl_db"
+      - "ETL_DB_PORT=5432"
+      - "CELERY_BROKER_URL=redis://redis:6379"
+    links:
+      - redis
+    depends_on:
+      - redis
+      - etl
+
+  elastic:
+    image: elasticsearch:8.13.0
+    expose:
+      - "9200"
+    environment:
+      - "discovery.type=single-node"
+      - "xpack.security.enabled=false"
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+
+  flower:
+    image: mher/flower:2.0.1
+    restart: always
+    ports:
+      - "5555:5555"
+    environment:
+      - "CELERY_BROKER_URL=redis://redis:6379"
+    depends_on:
+      - redis
+
+volumes:
+  movies_db_volume:
+  etl_db_volume:
