@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+
+  movies_admin:
+    restart: always
+    build: .
+    command: >
+      sh -c "cd /app/src/
+      && python manage.py migrate --noinput
+      && python manage.py createsuperuser --noinput || true
+      && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    expose:
+      - 8000
+    ports:
+      - "8000:8000"
+    environment:
+      - "DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}"
+      - "DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}"
+      - "DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}"
+      - "MOVIES_ADMIN_SECRET_KEY=${MOVIES_ADMIN_SECRET_KEY}"
+      - "MOVIES_ADMIN_DEBUG=True"
+      - "MOVIES_ADMIN_ALLOWED_HOSTS=${MOVIES_ADMIN_ALLOWED_HOSTS}"
+      - "MOVIES_DB_NAME=${MOVIES_DB_NAME}"
+      - "MOVIES_DB_USER=${MOVIES_DB_USER}"
+      - "MOVIES_DB_PASSWORD=${MOVIES_DB_PASSWORD}"
+      - "MOVIES_DB_HOST=movies_db"
+      - "MOVIES_DB_PORT=5432"
+    depends_on:
+      - movies_db
+
+  movies_db:
+    build:
+      context: configuration/postgres
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "${MOVIES_DB_PORT}:5432"
+    environment:
+      - "POSTGRES_USER=${MOVIES_DB_USER}"
+      - "POSTGRES_PASSWORD=${MOVIES_DB_PASSWORD}"
+      - "POSTGRES_DB=${MOVIES_DB_NAME}"
+    volumes:
+        - movies_db_volume:/var/lib/postgresql/data/
+
+
+volumes:
+  movies_db_volume:

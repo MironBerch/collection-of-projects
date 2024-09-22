@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+
+  movies_api:
+    restart: always
+    build: .
+    command: >
+      sh -c "cd /app/src/
+      && python main.py"
+    volumes:
+      - .:/app
+    environment:
+      - "FASTAPI_HOST=0.0.0.0"
+      - "FASTAPI_PORT=8080"
+      - "REDIS_HOST=redis"
+      - "REDIS_PORT=6379"
+      - "REDIS_DB=1"
+      - "ELASTIC_HOST=elastic"
+      - "ELASTIC_PORT=9200"
+    ports:
+      - "8080:8080"
+
+  elastic:
+    image: elasticsearch:8.13.0
+    expose:
+      - 9200
+    environment:
+      - "discovery.type=single-node"
+      - "xpack.security.enabled=false"
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6380:6379"

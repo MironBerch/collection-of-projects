@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+
+  etl:
+    restart: always
+    build: 
+      context: ./images/postgres-to-elastic
+      dockerfile: Dockerfile
+    command: >
+      sh -c "cd /app/images/postgres-to-elastic/src/
+      && python main.py"
+    volumes:
+      - .:/app
+    environment:
+      - "MOVIES_DB_NAME=${MOVIES_DB_NAME}"
+      - "MOVIES_DB_USER=${MOVIES_DB_USER}"
+      - "MOVIES_DB_PASSWORD=${MOVIES_DB_PASSWORD}"
+      - "MOVIES_DB_HOST=movies_db"
+      - "MOVIES_DB_PORT=5432"
+    depends_on:
+      - movies_db
+      - elastic
+
+  movies_db:
+    build:
+      context: ./images/movies-admin/configuration/postgres
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "${MOVIES_DB_PORT}:5432"
+    environment:
+      - "POSTGRES_USER=${MOVIES_DB_USER}"
+      - "POSTGRES_PASSWORD=${MOVIES_DB_PASSWORD}"
+      - "POSTGRES_DB=${MOVIES_DB_NAME}"
+    volumes:
+        - movies_db_volume:/var/lib/postgresql/data/
+
+  elastic:
+    image: elasticsearch:8.13.0
+    expose:
+      - 9200
+    environment:
+      - "discovery.type=single-node"
+      - "xpack.security.enabled=false"
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6380:6379"
+
+  movies_admin:
+    restart: always
+    build: 
+      context: ./images/movies-admin
+      dockerfile: Dockerfile
+    command: >
+      sh -c "cd /app/images/movies-admin/src/
+      && python manage.py migrate --noinput
+      && python manage.py createsuperuser --noinput || true
+      && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    expose:
+      - 8000
+    ports:
+      - "8000:8000"
+    environment:
+      - "DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}"
+      - "DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}"
+      - "DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}"
+      - "MOVIES_ADMIN_SECRET_KEY=${MOVIES_ADMIN_SECRET_KEY}"
+      - "MOVIES_ADMIN_DEBUG=True"
+      - "MOVIES_ADMIN_ALLOWED_HOSTS=${MOVIES_ADMIN_ALLOWED_HOSTS}"
+      - "MOVIES_DB_NAME=${MOVIES_DB_NAME}"
+      - "MOVIES_DB_USER=${MOVIES_DB_USER}"
+      - "MOVIES_DB_PASSWORD=${MOVIES_DB_PASSWORD}"
+      - "MOVIES_DB_HOST=movies_db"
+      - "MOVIES_DB_PORT=5432"
+    depends_on:
+      - movies_db
+
+  movies_api:
+    restart: always
+    build: 
+      context: ./images/movies-api
+      dockerfile: Dockerfile
+    command: >
+      sh -c "cd /app/images/movies-api/src/
+      && python main.py"
+    volumes:
+      - .:/app
+    environment:
+      - "FASTAPI_HOST=0.0.0.0"
+      - "FASTAPI_PORT=8080"
+      - "REDIS_HOST=redis"
+      - "REDIS_PORT=6379"
+      - "REDIS_DB=1"
+      - "ELASTIC_HOST=elastic"
+      - "ELASTIC_PORT=9200"
+    ports:
+      - "8080:8080"
+
+volumes:
+  movies_db_volume:

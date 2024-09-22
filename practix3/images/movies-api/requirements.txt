@@ -1,0 +1,111 @@
+aiohttp==3.9.5
+    # via elasticsearch
+aiosignal==1.3.1
+    # via aiohttp
+annotated-types==0.6.0
+    # via pydantic
+anyio==4.3.0
+    # via
+    #   starlette
+    #   watchfiles
+async-timeout==4.0.3
+    # via
+    #   aiohttp
+    #   redis
+attrs==23.2.0
+    # via aiohttp
+certifi==2024.2.2
+    # via elastic-transport
+click==8.1.7
+    # via uvicorn
+elastic-transport==8.13.0
+    # via elasticsearch
+elasticsearch[async]==8.13.0
+    # via
+    #   -r requirements.in
+    #   elasticsearch
+    #   elasticsearch-dsl
+elasticsearch-dsl==8.13.0
+    # via -r requirements.in
+exceptiongroup==1.2.1
+    # via anyio
+fastapi==0.110.0
+    # via -r requirements.in
+flake8==7.0.0
+    # via
+    #   -r requirements.in
+    #   pep8-naming
+frozenlist==1.4.1
+    # via
+    #   aiohttp
+    #   aiosignal
+h11==0.14.0
+    # via uvicorn
+httptools==0.6.1
+    # via uvicorn
+idna==3.7
+    # via
+    #   anyio
+    #   yarl
+isort==5.13.2
+    # via -r requirements.in
+mccabe==0.7.0
+    # via flake8
+multidict==6.0.5
+    # via
+    #   aiohttp
+    #   yarl
+orjson==3.10.0
+    # via -r requirements.in
+pep8-naming==0.13.3
+    # via -r requirements.in
+pycodestyle==2.11.1
+    # via flake8
+pydantic==2.6.4
+    # via
+    #   -r requirements.in
+    #   fastapi
+    #   pydantic-settings
+pydantic-core==2.16.3
+    # via pydantic
+pydantic-settings==2.2.1
+    # via -r requirements.in
+pyflakes==3.2.0
+    # via flake8
+python-dateutil==2.9.0.post0
+    # via elasticsearch-dsl
+python-dotenv==1.0.1
+    # via
+    #   pydantic-settings
+    #   uvicorn
+pyyaml==6.0.1
+    # via uvicorn
+redis==5.0.3
+    # via -r requirements.in
+six==1.16.0
+    # via python-dateutil
+sniffio==1.3.1
+    # via anyio
+starlette==0.36.3
+    # via fastapi
+typing-extensions==4.11.0
+    # via
+    #   anyio
+    #   fastapi
+    #   pydantic
+    #   pydantic-core
+    #   uvicorn
+urllib3==2.2.1
+    # via elastic-transport
+uvicorn[standard]==0.28.0
+    # via
+    #   -r requirements.in
+    #   uvicorn
+uvloop==0.19.0
+    # via uvicorn
+watchfiles==0.21.0
+    # via uvicorn
+websockets==12.0
+    # via uvicorn
+yarl==1.9.4
+    # via aiohttp

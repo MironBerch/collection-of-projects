@@ -1,0 +1,20 @@
+# FastAPI
+fastapi==0.110.0
+
+# Database
+redis==5.0.3
+
+# Elasticsearch
+elasticsearch[async]==8.13.0
+elasticsearch-dsl==8.13.0
+
+# Linters
+flake8==7.0.0
+isort==5.13.2
+pep8-naming==0.13.3
+
+# Tools
+uvicorn[standard]==0.28.0
+pydantic==2.6.4
+pydantic-settings==2.2.1
+orjson==3.10.0
