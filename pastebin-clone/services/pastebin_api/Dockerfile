@@ -1,0 +1,16 @@
+FROM python:3.12-alpine
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /app
+
+EXPOSE 8000
+
+COPY requirements/requirements.txt requirements.txt
+
+RUN pip install -r requirements.txt
+
+COPY . .
+
+ENTRYPOINT ["sh", "/app/entrypoint.sh"]
