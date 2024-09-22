@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+
+  movies_db:
+    build:
+      context: configuration/postgres
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "${MOVIES_DB_PORT}:5432"
+    environment:
+      - "POSTGRES_USER=${MOVIES_DB_USER}"
+      - "POSTGRES_PASSWORD=${MOVIES_DB_PASSWORD}"
+      - "POSTGRES_DB=${MOVIES_DB_NAME}"
+    volumes:
+        - movies_db_volume:/var/lib/postgresql/data/
+
+  etl_db:
+    image: postgres:16-alpine
+    restart: always
+    ports:
+      - "5433:5433"
+    environment:
+      - "POSTGRES_USER=${ETL_DB_USER}"
+      - "POSTGRES_PASSWORD=${ETL_DB_PASSWORD}"
+      - "POSTGRES_DB=${ETL_DB_NAME}"
+    volumes:
+        - etl_db_volume:/var/lib/postgresql/data/
+
+  movies_etl:
+    restart: always
+    build: .
+    command: >
+      sh -c "cd /app/src/
+      && python manage.py migrate --noinput
+      && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - ${ENV}
+    depends_on:
+      - etl_db
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    env_file:
+      - ${ENV}
+    ports:
+      - "6380:6379"
+
+  celery:
+    restart: always
+    env_file:
+      - ${ENV}
+    build: .
+    volumes:
+      - .:/app
+    command: >
+      sh -c "cd /app/src/
+      && celery -A config worker --beat -l info"
+    links:
+      - redis
+    depends_on:
+      - redis
+      - movies_etl
+
+  elastic:
+    image: elasticsearch:8.13.0
+    expose:
+      - 9200
+    environment:
+      - "discovery.type=single-node"
+      - "xpack.security.enabled=false"
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+
+  flower:
+    build: .
+    env_file:
+      - ${ENV}
+    restart: always
+    ports:
+      - "5555:5555"
+    environment:
+      - "CELERY_BROKER_URL=${CELERY_BROKER_URL}"
+    command: >
+      sh -c "cd /app/src/
+      && celery -A config flower --port=5555 --url_prefix=/celery"
+    depends_on:
+      - redis
+
+volumes:
+  movies_db_volume:
+  etl_db_volume:

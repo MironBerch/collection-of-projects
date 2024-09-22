@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+
+  movies_admin:
+    restart: always
+    build: .
+    command: >
+      sh -c "cd /app/src/
+      && python manage.py migrate --noinput
+      && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - ${ENV}
+    depends_on:
+      - movies_db
+
+  movies_db:
+    build:
+      context: configuration/postgres
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ${ENV}
+    ports:
+      - "${MOVIES_DB_PORT}:5432"
+    environment:
+      - POSTGRES_USER=${MOVIES_DB_USER}
+      - POSTGRES_PASSWORD=${MOVIES_DB_PASSWORD}
+      - POSTGRES_DB=${MOVIES_DB_NAME}
+    volumes:
+        - movies_db_volume:/var/lib/postgresql/data/
+
+
+volumes:
+  movies_db_volume:

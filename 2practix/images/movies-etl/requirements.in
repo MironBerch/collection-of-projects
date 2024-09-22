@@ -1,0 +1,26 @@
+# Python
+pandas==2.2.1
+
+# Django
+Django==5.0.3
+django-celery-beat==2.6.0
+
+# Database
+redis==5.0.3
+psycopg2-binary==2.9.9
+SQLAlchemy==2.0.29
+
+# Elasticsearch
+elasticsearch==8.13.0
+elasticsearch-dsl==8.13.0
+
+# Linters
+flake8==7.0.0
+isort==5.13.2
+pep8-naming==0.13.3
+
+# Tools
+celery==5.3.5
+parse==1.20.1
+pydantic==2.6.4
+flower==2.0.1
