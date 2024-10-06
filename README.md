@@ -1,6 +1,9 @@
 # computer-science-exam-reference-book
 
 ## Задание 1
+
+Всё очевидно
+
 ## Задание 2
 
 ### Теория
@@ -24,12 +27,55 @@ for x in 0, 1:
 ```
 
 ## Задание 3
+
+Всё очевидно
+
 ## Задание 4
 ## Задание 5
 ## Задание 6
 ## Задание 7
 ## Задание 8
 ## Задание 9
+
+```python
+c = 0
+f = open('09.csv')
+for s in f:
+    a = list(map(int, s.split(';')))
+    a.sort()
+    if a[0]**2 + a[1]**2 > a[2]**2:
+        c+=1
+print(c)
+```
+
+```python
+f = open('09.txt')
+c = 0
+for i in f:
+    l = [int(x) for x in i.split()]
+    repeat = [x for x in l if l.count(x) == 2]
+    nonrepeat = [x for x in l if l.count(x) == 1]
+    if len(repeat) == 4 and len(nonrepeat) == 2 and sum(repeat) // 2 < sum(nonrepeat):
+        c += 1
+print(c)
+```
+
+```python
+f = open('09.txt')
+c = 0
+for s in f:
+    a=list(map(int, s.split()))
+    p = []
+    if len(set(a)) == 4:
+        for i in range(len(a)):
+            if a.count(a[i]) == 2:
+                p.append(a[i])
+        if len(p)==4:
+            if sum(set(p))<(sum(a)-sum(p)):
+                c+=1
+print(c)
+```
+
 ## Задание 10
 ## Задание 11
 ## Задание 12
