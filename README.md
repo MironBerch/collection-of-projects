@@ -32,6 +32,18 @@ for x in 0, 1:
 
 ## Задание 4
 ## Задание 5
+
+```python
+def from_base_to_5(N):
+    if N == 0:
+        return 0
+    r = ''
+    while N > 0:
+        r = str(N % 5)+r
+        N //= 5
+    return r
+```
+
 ## Задание 6
 ## Задание 7
 ## Задание 8
