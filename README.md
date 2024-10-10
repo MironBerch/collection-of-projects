@@ -99,6 +99,24 @@ print(c)
 ![Решение](./images/11/type_1_solution_2.png)
 
 ## Задание 12
+
+```python
+def f(a: str):
+    while '52' in a or '2222' in a or '1112' in a:
+        if '52' in a:
+            a = a.replace('52', '11', 1)
+        if '2222' in a:
+            a = a.replace('2222', '5', 1)
+        if '1112' in a:
+            a = a.replace('1112', '2', 1)
+    return a
+
+for n in range(3, 10_000):
+    r = f('5'+n*'2')
+    if sum([int(i) for i in r]) == 1685:
+        print(n)
+```
+
 ## Задание 13
 ## Задание 14
 ## Задание 15
