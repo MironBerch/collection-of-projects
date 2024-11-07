@@ -9,6 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 python-telegram-bot = "^21.7"
+pydantic-settings = "^2.6.1"
 
 
 [build-system]
