@@ -30,6 +30,8 @@ async def send_response(
     Args:
         update (telegram.Update): incoming update.
         context (telegram.ext.ContextTypes.DEFAULT_TYPE): context for the default settings.
+        response (str): response text.
+        keyboard (InlineKeyboardMarkup | None): keyboard object.
 
     Returns:
         None:
