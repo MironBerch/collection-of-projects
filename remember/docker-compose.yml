@@ -1,0 +1,156 @@
+version: '3.8'
+
+services:
+  # admin
+
+  admin_panel:
+    restart: always
+    build: ./images/admin-panel/
+    command: >
+      sh -c "cd src/
+      && python manage.py migrate --noinput
+      && python manage.py createsuperuser --noinput || true
+      && python manage.py runserver 0.0.0.0:8000"
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    environment:
+      - "DJANGO_SUPERUSER_USERNAME=admin"
+      - "DJANGO_SUPERUSER_EMAIL=admin@gmail.com"
+      - "DJANGO_SUPERUSER_PASSWORD=root"
+      - "MOVIES_ADMIN_SECRET_KEY=secretkey"
+      - "MOVIES_ADMIN_DEBUG=True"
+      - "MOVIES_DB_NAME=movies"
+      - "MOVIES_DB_USER=postgres"
+      - "MOVIES_DB_PASSWORD=postgres"
+      - "MOVIES_DB_HOST=movies_db"
+      - "MOVIES_DB_PORT=5432"
+    depends_on:
+      - movies_db
+
+  movies_db:
+    build: ./images/etl/infra/postgres/
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_DB=movies"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+    volumes:
+        - movies_db_volume:/var/lib/postgresql/data/
+
+  # etl
+
+  etl_db:
+    image: postgres:16-alpine
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      - "POSTGRES_DB=etl"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+    volumes:
+        - etl_db_volume:/var/lib/postgresql/data/
+
+  etl:
+    restart: always
+    build: ./images/etl/
+    command: >
+      sh -c "cd src/
+      && python manage.py migrate --noinput
+      && python manage.py createsuperuser --noinput || true
+      && python manage.py runserver 0.0.0.0:8800"
+    expose:
+      - "8800"
+    ports:
+      - "8800:8800"
+    environment:
+      - "DJANGO_SUPERUSER_USERNAME=admin"
+      - "DJANGO_SUPERUSER_EMAIL=admin@gmail.com"
+      - "DJANGO_SUPERUSER_PASSWORD=root"
+      - "ETL_SECRET_KEY=secretkey"
+      - "ETL_DEBUG=True"
+      - "ETL_DB_NAME=etl"
+      - "ETL_DB_USER=postgres"
+      - "ETL_DB_PASSWORD=postgres"
+      - "ETL_DB_HOST=etl_db"
+      - "ETL_DB_PORT=5432"
+      - "CELERY_BROKER_URL=redis://redis:6379"
+    depends_on:
+      - etl_db
+      - redis
+
+  celery:
+    restart: always
+    build: ./images/etl/
+    command: >
+      sh -c "cd src/
+      && celery -A config worker --beat -l info"
+    environment:
+      - "ETL_SECRET_KEY=secretkey"
+      - "ETL_DEBUG=True"
+      - "ETL_DB_NAME=etl"
+      - "ETL_DB_USER=postgres"
+      - "ETL_DB_PASSWORD=postgres"
+      - "ETL_DB_HOST=etl_db"
+      - "ETL_DB_PORT=5432"
+      - "CELERY_BROKER_URL=redis://redis:6379"
+    links:
+      - redis
+    depends_on:
+      - redis
+      - etl
+
+  #async api
+
+  movies_api:
+    restart: always
+    build: ./images/async-api/
+    command: >
+      sh -c "cd src/
+      && python main.py"
+    expose:
+      - "8080"
+    environment:
+      - "FASTAPI_PORT=8080"
+      - "ELASTIC_HOST=elastic"
+      - "ELASTIC_PORT=9200"
+      - "REDIS_HOST=redis"
+      - "REDIS_PORT=6379"
+      - "REDIS_DB=1"
+    ports:
+      - "8080:8080"
+
+  elastic:
+    image: elasticsearch:8.13.0
+    expose:
+      - "9200"
+    ports:
+      - "9200:9200"
+    environment:
+      - "discovery.type=single-node"
+      - "xpack.security.enabled=false"
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+
+  flower:
+    image: mher/flower:2.0.1
+    restart: always
+    ports:
+      - "5555:5555"
+    environment:
+      - "CELERY_BROKER_URL=redis://redis:6379"
+    depends_on:
+      - redis
+
+volumes:
+  movies_db_volume:
+  etl_db_volume:

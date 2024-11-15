@@ -1,0 +1,19 @@
+# Django
+Django==5.0.3
+django-filter==24.2
+django-debug-toolbar==4.3.0
+
+# Django REST framework
+djangorestframework==3.15.1
+drf-spectacular==0.27.1
+
+# Database
+psycopg2-binary==2.9.9
+
+# Linters
+flake8==7.0.0
+isort==5.13.2
+pep8-naming==0.13.3
+
+# Tools
+gunicorn==22.0.0

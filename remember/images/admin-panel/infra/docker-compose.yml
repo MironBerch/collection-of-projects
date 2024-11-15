@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+
+  admin_panel:
+    restart: always
+    build: ../.
+    command: >
+      sh -c "cd /app/src/
+      && mkdir -p media
+      && python manage.py collectstatic --noinput
+      && python manage.py migrate --noinput
+      && python manage.py createsuperuser --noinput || true
+      && gunicorn --reload -c ../infra/gunicorn/gunicorn_config.py config.wsgi:application"
+    expose:
+      - "8000"
+    volumes:
+      - static_volume:/app/src/static
+      - media_volume:/app/src/media
+    environment:
+      - "DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}"
+      - "DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}"
+      - "DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}"
+      - "MOVIES_ADMIN_SECRET_KEY=${MOVIES_ADMIN_SECRET_KEY}"
+      - "MOVIES_ADMIN_DEBUG=False"
+      - "MOVIES_DB_NAME=${MOVIES_DB_NAME}"
+      - "MOVIES_DB_USER=${MOVIES_DB_USER}"
+      - "MOVIES_DB_PASSWORD=${MOVIES_DB_PASSWORD}"
+      - "MOVIES_DB_HOST=movies_db"
+      - "MOVIES_DB_PORT=5432"
+    depends_on:
+      - movies_db
+
+  movies_db:
+    build: ../infra/postgres/
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_DB=${MOVIES_DB_NAME}"
+      - "POSTGRES_USER=${MOVIES_DB_USER}"
+      - "POSTGRES_PASSWORD=${MOVIES_DB_PASSWORD}"
+    volumes:
+        - movies_db_volume:/var/lib/postgresql/data/
+
+  nginx:
+    build: ../infra/nginx
+    volumes:
+      - static_volume:/app/src/static
+      - media_volume:/app/src/media
+    ports:
+      - "80:80"
+    depends_on:
+      - admin_panel
+
+volumes:
+  movies_db_volume:
+  static_volume:
+  media_volume:
