@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Карта сайта &bull;
+{% endblock %}
+
+{% block content %}
+    <div class="">
+        <h1 class="h1 text-center">Карта сайта</h1>
+        <div class="d-flex align-items-center py-4 bg-body-tertiary">
+            <div class="form w-100 m-auto">
+                <ul class="list-group">
+                    <li><a href="{% url 'events_list' %}">Список активных мероприятий</a></li>
+                    <li><a href="{% url 'events_archive' %}">Полный список мероприятий</a></li>
+                    <li><a href="{% url 'diplomas_list' %}">Дипломы</a></li>
+                    <li><a href="{% url 'supervisor_events' %}">Мероприятия в которых я являюсь руководителем</a></li>
+                    <li><a href="{% url 'participant_events' %}">Мероприятия в которых я являюсь участником</a></li>
+                    {% if request.user.is_superuser or request.user.is_staff %}
+                        <li><a href="{% url 'admin:index' %}">Панель администратора</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

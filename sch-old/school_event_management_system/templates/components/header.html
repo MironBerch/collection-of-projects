@@ -1,0 +1,34 @@
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            {% if request.user.is_authenticated  %}
+                <li><a href="{% url 'events_list' %}" class="nav-link px-2 link-secondary">На главную</a></li>
+                <li><a href="{% url 'diplomas_list' %}" class="nav-link px-2">Мои дипломы</a></li>
+                {% if request.user.role == 'ученик' %}
+                    <li><a href="{% url 'participant_events' %}" class="nav-link px-2">Мои мероприятия</a></li>
+                {% else %}
+                    <li><a href="{% url 'supervisor_events' %}" class="nav-link px-2">Мои мероприятия</a></li>
+                {% endif %}
+            {% else %}
+                <li><a href="{% url 'events_list' %}" class="nav-link px-2 link-secondary">{{ school }}</a></li>
+            {% endif %}
+        </ul>
+        <div class="col-md-3 text-end">
+            {% if request.user.is_authenticated %}
+                <div class="dropdown">
+                    <a class="btn btn-outline-primary me-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="position: relative;">
+                        {{ request.user }}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'settings_dashboard' %}">Настройки</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'signout' %}">Выйти</a></li>
+                    </ul>
+                </div>
+            {% else %}
+                <a href="{% url 'signin' %}"><button type="button" class="btn btn-outline-primary me-2">Вход</button></a>
+                <a href="{% url 'signup' %}"><button type="button" class="btn btn-primary">Регистрация</button></a>
+            {% endif %}
+        </div>
+    </header>
+</div>
