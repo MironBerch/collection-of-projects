@@ -1,0 +1,26 @@
+# environment
+
+.venv
+.env
+
+# python
+
+*.pyc
+*.pyo
+__pycache__/
+
+# logging
+
+*.log
+
+# pytest
+
+*.pytest_cache
+
+# database
+
+db.sqlite3
+
+# media files
+
+media/
