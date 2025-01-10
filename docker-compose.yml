@@ -1,0 +1,35 @@
+services:
+
+  api:
+    restart: always
+    build: .
+    command: >
+      sh -c "cd /app/src/
+      && poetry run python main.py"
+    volumes:
+      - .:/app
+    environment:
+      - "POSTGRES_NAME=${POSTGRES_NAME}"
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+      - "POSTGRES_HOST=db"
+      - "POSTGRES_PORT=5432"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+      - "POSTGRES_DB=${POSTGRES_DB}"
+    volumes:
+        - library_db_volume:/var/lib/postgresql/data/
+
+volumes:
+  library_db_volume:
