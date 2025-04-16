@@ -1,0 +1,7 @@
+[project]
+name = "capybara-api"
+version = "0.1.0"
+description = "capybara-api"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
