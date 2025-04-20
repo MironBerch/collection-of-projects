@@ -1,0 +1,28 @@
+# environment
+
+.venv
+.env
+
+# python
+
+*.pyc
+*.pyo
+__pycache__/
+
+# logging
+
+logs/
+*.log
+
+# pytest
+
+*.pytest_cache
+
+# Terraform
+.terraform
+.terraform.lock.hcl
+.terraform.tfstate.lock.info
+terraform.tfvars
+terraform.tfstate
+terraform.tfstate.backup
+output.txt
