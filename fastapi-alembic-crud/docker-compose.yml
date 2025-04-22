@@ -1,0 +1,32 @@
+services:
+
+  api:
+    restart: always
+    build: .
+    command: >
+      sh -c "cd /app/src/
+      && uv run alembic upgrade head
+      && uv run alembic revision --autogenerate -m "Initial migration"
+      && uv run alembic upgrade head
+      && uv run main.py"
+    expose:
+      - "8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_DB=postgres"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+    volumes:
+        - db_volume:/var/lib/postgresql/data/
+
+volumes:
+  db_volume:
