@@ -1,0 +1,7 @@
+[project]
+name = "crypto-bot"
+version = "0.1.0"
+description = "telegram crypto bot"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
