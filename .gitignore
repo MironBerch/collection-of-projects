@@ -1,0 +1,19 @@
+# environment
+
+.venv/
+.env
+
+# python
+
+*.pyc
+*.pyo
+__pycache__/
+
+# logging
+
+logs/
+*.log
+
+# pytest
+
+*.pytest_cache
