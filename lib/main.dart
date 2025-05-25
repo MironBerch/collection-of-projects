@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'src/features/weight/weight_page.dart';
 void main() {
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
   runApp(const MyApp());
 }
 
@@ -29,21 +32,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    const CounterPage(),
+    const WeightPage(),
     const PlaceholderPage(title: "IMT"),
     const PlaceholderPage(title: "Plan"),
     const PlaceholderPage(title: "Settings"),
   ];
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: _pages[_currentIndex],
-      floatingActionButton: _currentIndex == 0
-          ? FloatingActionButton(
-              onPressed: _incrementCounter,
-              tooltip: 'Increment',
-              child: const Icon(Icons.add),
-            )
-          : null,
       bottomNavigationBar: BottomNavigationBar(
       currentIndex: _currentIndex,
       onTap: (index) {
@@ -95,27 +84,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class CounterPage extends StatelessWidget {
-  const CounterPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final counter = (context.findAncestorStateOfType<_MyHomePageState>()!._counter);
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text('You have pushed the button this many times:'),
-          Text(
-            '$counter',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class PlaceholderPage extends StatelessWidget {
   final String title;
