@@ -179,10 +179,10 @@ class _ProcessCreationScreenState extends State<ProcessCreationScreen> {
     if (path != null && mounted) setState(() => _folderPath = path);
   }
 
-  bool _isImageOrVideo(String path) {
-    final ext = p.extension(path).toLowerCase();
-    return ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi'].contains(ext);
-  }
+  // bool _isImageOrVideo(String path) {
+  //   final ext = p.extension(path).toLowerCase();
+  //   return ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi'].contains(ext);
+  // }
 
   Future<void> _saveProcess() async {
     if (_nameController.text.isEmpty || _folderPath == null) return;
@@ -201,7 +201,7 @@ class _ProcessCreationScreenState extends State<ProcessCreationScreen> {
       int cFiles = 0;
       for (var file in files) {
         cFiles++;
-        if (file is File && _isImageOrVideo(file.path)) {
+        if (file is File ) { // && _isImageOrVideo(file.path)
           await db.insert('media_files', {
             'process_id': processId,
             'file_path': file.path,
@@ -435,10 +435,12 @@ class DeletionScreen extends StatelessWidget {
     final db = await AppDatabase().database;
     int deletedFileCount = 0;
     int deletedObjCount = 0;
+    var excLast = "";
 
     for (var file in files) {
       try {
         final f = File(file.filePath);
+        
         if (await f.exists()) {
           await f.delete();
           deletedFileCount++;
@@ -451,13 +453,14 @@ class DeletionScreen extends StatelessWidget {
         deletedObjCount++;
       } catch (e) {
         debugPrint('Error deleting file: ${e.toString()}');
+        excLast = 'Error deleting file: ${e.toString()}';
       }
     }
 
     if (!context.mounted) return;
     
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Удалено $deletedFileCount файлов, удалено $deletedObjCount объектов файлов из бд')),
+      SnackBar(content: Text('Удалено $deletedFileCount файлов, удалено $deletedObjCount объектов файлов из бд, $excLast')),
     );
   }
 
