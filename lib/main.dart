@@ -301,7 +301,7 @@ class _FilterScreenState extends State<FilterScreen> {
     _loadMediaFiles();
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -309,7 +309,6 @@ class _FilterScreenState extends State<FilterScreen> {
       ),
       body: Column(
         children: [
-          // Основное содержимое с изображением
           Expanded(
             child: _currentIndex < _mediaFiles.length
                 ? Center(
@@ -330,31 +329,51 @@ class _FilterScreenState extends State<FilterScreen> {
                   )
                 : const Center(child: Text('All files processed!')),
           ),
-          // Фиксированная панель с кнопками внизу
-          Container(
-            padding: const EdgeInsets.all(16),
+          SizedBox(
+            height: 80,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(
-                  onPressed: _currentIndex < _mediaFiles.length 
-                      ? () => _updateStatus(2)
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    minimumSize: const Size(120, 50),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: ElevatedButton(
+                      onPressed: _currentIndex < _mediaFiles.length 
+                          ? () => _updateStatus(2)
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                        ),
+                        padding: const EdgeInsets.all(16),
+                      ),
+                      child: const Text(
+                        'Dislike', 
+                        style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 255, 255, 255)),
+                      ),
+                    ),
                   ),
-                  child: const Text('Dislike'),
                 ),
-                ElevatedButton(
-                  onPressed: _currentIndex < _mediaFiles.length 
-                      ? () => _updateStatus(1)
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    minimumSize: const Size(120, 50),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: ElevatedButton(
+                      onPressed: _currentIndex < _mediaFiles.length 
+                          ? () => _updateStatus(1)
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                        ),
+                        padding: const EdgeInsets.all(16),
+                      ),
+                      child: const Text(
+                        'Like',
+                        style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 255, 255, 255)),
+                      ),
+                    ),
                   ),
-                  child: const Text('Like'),
                 ),
               ],
             ),
@@ -382,17 +401,34 @@ class DeletionScreen extends StatelessWidget {
         ));
   }
 
-  Future<void> _deleteFiles(List<MediaFile> files) async {
+  Future<void> _deleteFiles(List<MediaFile> files, BuildContext context) async {
+    final db = await AppDatabase().database;
+    int deletedFileCount = 0;
+    int deletedObjCount = 0;
+
     for (var file in files) {
       try {
         final f = File(file.filePath);
         if (await f.exists()) {
           await f.delete();
+          deletedFileCount++;
         }
+        await db.delete(
+          'media_files',
+          where: 'id = ?',
+          whereArgs: [file.id],
+        );
+        deletedObjCount++;
       } catch (e) {
-        debugPrint('Error deleting file: $e');
+        debugPrint('Error deleting file: ${e.toString()}');
       }
     }
+
+    if (!context.mounted) return;
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Удалено $deletedFileCount файлов, удалено $deletedObjCount объектов файлов из бд')),
+    );
   }
 
   @override
@@ -402,13 +438,40 @@ class DeletionScreen extends StatelessWidget {
       body: FutureBuilder<List<MediaFile>>(
         future: _getFilesToDelete(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return const CircularProgressIndicator();
-          final files = snapshot.data!;
-          return ListView.builder(
-            itemCount: files.length,
-            itemBuilder: (context, index) => ListTile(
-              title: Text(files[index].filePath),
-              trailing: const Icon(Icons.delete),
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          
+          if (snapshot.hasError) {
+            return Center(child: Text('Ошибка: ${snapshot.error}'));
+          }
+          
+          final files = snapshot.data ?? [];
+          
+          if (files.isEmpty) {
+            return const Center(child: Text('Нет файлов для удаления'));
+          }
+
+          return RefreshIndicator(
+            onRefresh: () async {
+              await _getFilesToDelete();
+            },
+            child: ListView.builder(
+              itemCount: files.length,
+              itemBuilder: (context, index) => ListTile(
+                title: Text(files[index].filePath),
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () async {
+                    await _deleteFiles([files[index]], context);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Файл удалён')),
+                      );
+                    }
+                  },
+                ),
+              ),
             ),
           );
         },
@@ -417,10 +480,7 @@ class DeletionScreen extends StatelessWidget {
         child: const Icon(Icons.delete_forever),
         onPressed: () async {
           final files = await _getFilesToDelete();
-          await _deleteFiles(files);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Deleted ${files.length} files')),
-          );
+          await _deleteFiles(files, context);
         },
       ),
     );
