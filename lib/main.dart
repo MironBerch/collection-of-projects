@@ -193,21 +193,35 @@ class _ProcessCreationScreenState extends State<ProcessCreationScreen> {
       'folder_path': _folderPath,
     });
 
-    final dir = Directory(_folderPath!);
-    List<FileSystemEntity> files = await dir.list(recursive: true).toList();
-    
-    for (var file in files) {
-      if (file is File && _isImageOrVideo(file.path)) {
-        await db.insert('media_files', {
-          'process_id': processId,
-          'file_path': file.path,
-          'status': 0,
-        });
+    try {
+      final dir = Directory(_folderPath!);
+      List<FileSystemEntity> files = await dir.list(recursive: true).toList();
+      
+      int addedFiles = 0;
+      int cFiles = 0;
+      for (var file in files) {
+        cFiles++;
+        if (file is File && _isImageOrVideo(file.path)) {
+          await db.insert('media_files', {
+            'process_id': processId,
+            'file_path': file.path,
+            'status': 0,
+          });
+          addedFiles++;
+        }
       }
-    }
 
-    if (!mounted) return;
-    Navigator.pop(context);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Добавлено $addedFiles файлов, $cFiles было')),
+      );
+      Navigator.pop(context);
+    } catch (e) {
+      debugPrint('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Ошибка доступа к файлам: $e')),
+      );
+    }
   }
 
   @override
@@ -257,24 +271,40 @@ class _FilterScreenState extends State<FilterScreen> {
   int _processed = 0;
 
   Future<void> _loadMediaFiles() async {
-    final db = await AppDatabase().database;
-    final List<Map<String, dynamic>> maps = await db.query(
-      'media_files',
-      where: 'process_id = ? AND status = 0',
-      whereArgs: [widget.processId],
-    );
+    try {
+      final db = await AppDatabase().database;
+      final List<Map<String, dynamic>> maps = await db.query(
+        'media_files',
+        where: 'process_id = ? AND status = 0',
+        whereArgs: [widget.processId],
+      );
 
-    if (!mounted) return;
-    setState(() {
-      _mediaFiles = List.generate(maps.length, (i) => MediaFile(
-            id: maps[i]['id'],
-            processId: maps[i]['process_id'],
-            filePath: maps[i]['file_path'],
-            status: maps[i]['status'],
-          ));
-      _total = _mediaFiles.length;
-      _processed = 0;
-    });
+      if (!mounted) return;
+      setState(() {
+        _mediaFiles = List.generate(maps.length, (i) => MediaFile(
+              id: maps[i]['id'],
+              processId: maps[i]['process_id'],
+              filePath: maps[i]['file_path'],
+              status: maps[i]['status'],
+            ));
+        _total = _mediaFiles.length;
+        _processed = 0;
+        _currentIndex = 0;
+      });
+
+      if (_mediaFiles.isEmpty && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Нет файлов для фильтрации')),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error loading files: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Ошибка загрузки файлов: $e')),
+        );
+      }
+    }
   }
 
   Future<void> _updateStatus(int status) async {
@@ -319,7 +349,7 @@ class _FilterScreenState extends State<FilterScreen> {
                           Image.file(
                             File(_mediaFiles[_currentIndex].filePath),
                             errorBuilder: (context, error, stackTrace) {
-                              return const Text('Не удалось загрузить изображение');
+                              return Text('Ошибка загрузки: $error');
                             },
                           ),
                           const SizedBox(height: 20),
