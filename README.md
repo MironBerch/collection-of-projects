@@ -12,3 +12,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Problems
+error deletiong file Path not found exception cannto delete file: storage emulated 0 dcmi fold photo1.jpg (os error no such file or directore (dart flutter)
