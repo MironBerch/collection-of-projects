@@ -4,7 +4,11 @@ version = "0.1.0"
 description = "Yandex Alice skill for integration with chatbots (gpt, deepseek, llama, etc) API"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "fastapi>=0.115.12",
+    "requests>=2.32.4",
+    "uvicorn>=0.34.3",
+]
 
 [dependency-groups]
 dev = [
