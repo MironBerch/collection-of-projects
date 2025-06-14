@@ -73,17 +73,13 @@ ExampleWindow::ExampleWindow() : AWindow("Examples", 800_dp, 700_dp) {
                                                 aui::platform::current::is_mobile(), Vertical, Horizontal> {
               Vertical {
                 // buttons
-                GroupBox {
-                  Label { "Buttons" },
-                  Vertical {
-                    _new<AButton>("Common button"),
-                  },
-                },
 
                 GroupBox {
-                  Label { "System dialog" },
+                  Label { "File" },
                   Vertical {
-                    _new<AButton>("Show file chooser")
+                    _new<AButton>("Create file"),
+                    _new<AButton>("Save file"),
+                    _new<AButton>("Open file")
                         .connect(&AView::clicked, this,
                                  [&] {
                                      mAsync << ADesktop::browseForFile(this).onSuccess([&](const APath& f) {
@@ -94,30 +90,17 @@ ExampleWindow::ExampleWindow() : AWindow("Examples", 800_dp, 700_dp) {
                                          }
                                      });
                                  }),
-                    _new<AButton>("Show folder chooser")
+                    _new<AButton>("Save file as")
                         .connect(&AView::clicked, this,
                                  [&] {
-                                     mAsync << ADesktop::browseForDir(this).onSuccess([&](const APath& f) {
+                                     mAsync << ADesktop::browseForFile(this).onSuccess([&](const APath& f) {
                                          if (f.empty()) {
                                              AMessageBox::show(this, "Result", "Cancelled");
                                          } else {
-                                             AMessageBox::show(this, "Result", "Folder: {}"_format(f));
+                                             AMessageBox::show(this, "Result", "File: {}"_format(f));
                                          }
                                      });
                                  }),
-                    _new<AButton>("Message box")
-                        .connect(&AView::clicked, this,
-                                 [&] {
-                                     /// [AMessageBox]
-                                     AMessageBox::show(this,
-                                                       "Title",
-                                                       "Message",
-                                                       AMessageBox::Icon::NONE,
-                                                       AMessageBox::Button::OK);
-                                     /// [AMessageBox]
-                                 }),
-                    _new<AButton>("Cause assertion fail")
-                        .connect(&AView::clicked, this, [&] { AUI_ASSERT_NO_CONDITION("assertion fail"); }),
                   },
                 },
               },
@@ -141,8 +124,8 @@ ExampleWindow::ExampleWindow() : AWindow("Examples", 800_dp, 700_dp) {
                             .build()
                         << ".input-field" let { it->setExpanding(); },
                   } }
-    with_style { Expanding {} } } }),
-            "Common");
+    with_style { Expanding {} } } })
+    );
 
 
         //             Vertical::Expanding {
@@ -160,18 +143,10 @@ ExampleWindow::ExampleWindow() : AWindow("Examples", 800_dp, 700_dp) {
         //                   { WordBreak::BREAK_ALL }),
         //             } with_style { MinSize { 200_dp } },
 
-        //           [] {
-        //               _<AViewContainer> v1 = Vertical {};
-        //               _<AViewContainer> v2 = Vertical {};
-        //               for (int i = 0; i <= 9; ++i) {
-        //                   v1->addView(Horizontal {
-        //                     _new<ALabel>("{} px"_format(i + 6)),
-        //                     _new<ALabel>("Hello! [] .~123`") with_style { FontSize { AMetric(i + 6, AMetric::T_PX) } } });
         //                   v2->addView(Horizontal {
         //                     _new<ALabel>("{} px"_format(i + 16)),
         //                     _new<ALabel>("Hello! [] .~123`") with_style { FontSize { AMetric(i + 16, AMetric::T_PX) } } });
-        //               }
-        //               return Horizontal { v1, v2 };
+        //               return Horizontal { v2 };
 
         it->setExpanding();
     });
