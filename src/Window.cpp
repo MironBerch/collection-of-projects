@@ -114,48 +114,23 @@ ExampleWindow::ExampleWindow() : AWindow("Examples", 800_dp, 700_dp) {
                     AScrollArea::Builder()
                             .withContents(_new<ATextArea>(
                                 "AUI Framework - Declarative UI toolkit for modern C++20\n"
-                                "Copyright (C) 2020-2025 Alex2772 and Contributors\n"
                                 "\n"
-                                "SPDX-License-Identifier: MPL-2.0\n"
-                                "\n"
-                                "This Source Code Form is subject to the terms of the Mozilla "
-                                "Public License, v. 2.0. If a copy of the MPL was not distributed with this "
-                                "file, You can obtain one at http://mozilla.org/MPL/2.0/."))
+                                "SPDX-License-Identifier: MPL-2.0\"") with_style { FontSize { AMetric(12, AMetric::T_PX) } })
                             .build()
                         << ".input-field" let { it->setExpanding(); },
                   } }
     with_style { Expanding {} } } })
     );
-
-
-        //             Vertical::Expanding {
-        //               _new<ALabel>("Default"),
-        //               AText::fromString(
-        //                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
-        //                   "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, "
-        //                 ) with_style { ATextAlign::JUSTIFY },
-        //             } with_style { MinSize { 200_dp } },
-        //             Vertical::Expanding {
-        //               _new<ALabel>("Word breaking"),
-        //               AText::fromString(
-        //                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
-        //                   "proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-        //                   { WordBreak::BREAK_ALL }),
-        //             } with_style { MinSize { 200_dp } },
-
-        //                   v2->addView(Horizontal {
-        //                     _new<ALabel>("{} px"_format(i + 16)),
-        //                     _new<ALabel>("Hello! [] .~123`") with_style { FontSize { AMetric(i + 16, AMetric::T_PX) } } });
-        //               return Horizontal { v2 };
-
+        //  AText::fromString("") with_style { ATextAlign::JUSTIFY },} with_style { MinSize { 200_dp } },
+        //  AText::fromString("", { WordBreak::BREAK_ALL }),} with_style { MinSize { 200_dp } },
         it->setExpanding();
     });
 
     addView(Horizontal {
-      _new<ASpacerExpanding>(),
-      _new<ALabel>("\u00a9 Alex2772, 2021, alex2772.ru") let {
-              it << "#copyright";
-              it->setEnabled(false);
-          },
+        _new<ASpacerExpanding>(),
+        _new<ALabel>("\u00a9 MironBerch, 2025") let {
+            it << "#copyright";
+            it->setEnabled(false);
+        },
     });
 }
