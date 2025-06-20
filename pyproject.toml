@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "Download pictures (or videos) from X (twitter)"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "requests>=2.32.4",
+]
 
 [dependency-groups]
 dev = [
