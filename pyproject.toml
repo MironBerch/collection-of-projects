@@ -4,4 +4,9 @@ version = "0.1.0"
 description = "Telegram assistent"
 readme = ""
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "jinja2>=3.1.6",
+    "pydantic>=2.11.7",
+    "pydantic-settings>=2.10.1",
+    "python-telegram-bot>=22.3",
+]
