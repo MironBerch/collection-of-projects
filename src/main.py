@@ -1,17 +1,11 @@
 import logging
 
-import handlers
-from telegram.ext import ApplicationBuilder, CommandHandler
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
 
-from config import TELEGRAM_API_TOKEN
+from handlers import start, voice
+from core.config import settings
 
-COMMAND_HANDLERS = {
-    'start': handlers.start,
-    'transactions_list': handlers.transactions_list,
-    'categories_list': handlers.categories_list,
-    'incomes_list': handlers.incomes_list,
-    'expenses_list': handlers.expenses_list,
-}
+COMMAND_HANDLERS = {'start': start.start}
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO,
@@ -19,19 +13,19 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-if not TELEGRAM_API_TOKEN:
+if not settings.telegram.api_token:
     raise ValueError(
         'TELEGRAM_API_TOKEN env variables was not implemented in .env.',
     )
 
 
 def main():
-    application = ApplicationBuilder().token(TELEGRAM_API_TOKEN).build()
+    application = ApplicationBuilder().token(settings.telegram.api_token).build()
 
     for command_name, command_handler in COMMAND_HANDLERS.items():
         application.add_handler(CommandHandler(command_name, command_handler))
-    application.add_handler(handlers.authenticate_handler)
-    application.add_handler(handlers.category_create_handler)
+    
+    application.add_handler(MessageHandler(filters.VOICE, voice.handle_voice))
 
     application.run_polling()
 
@@ -43,4 +37,3 @@ if __name__ == '__main__':
         import traceback
 
         logger.warning(traceback.format_exc())
- 
