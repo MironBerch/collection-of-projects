@@ -1,0 +1,8 @@
+[project]
+name = "vedun"
+version = "0.0.1"
+description = ""
+readme = "README.md"
+requires-python = ">=3.13"
+license = "Apache-2.0"
+dependencies = []
