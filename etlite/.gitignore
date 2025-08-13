@@ -1,0 +1,23 @@
+# environment
+
+.venv/
+.env
+
+# IDE files
+.vscode/
+.idea/
+
+# python
+
+*.pyc
+*.pyo
+__pycache__/
+
+# logging
+
+logs/
+*.log
+
+# pytest
+
+*.pytest_cache
