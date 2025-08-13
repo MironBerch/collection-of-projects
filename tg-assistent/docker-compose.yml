@@ -1,0 +1,12 @@
+services:
+
+  bot:
+    restart: always
+    build: .
+    command: >
+      sh -c "cd /app/src/
+      && uv run main.py"
+    volumes:
+      - .:/app
+    environment:
+      - "TELEGRAM_API_TOKEN=${TELEGRAM_API_TOKEN}"
