@@ -1,0 +1,55 @@
+[project]
+name = "yandex-alice-llm-skill"
+version = "0.1.0"
+description = "Yandex Alice skill for integration with chatbots (gpt, deepseek, llama, etc) API"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.115.12",
+    "requests>=2.32.4",
+    "uvicorn>=0.34.3",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.16.0",
+    "ruff>=0.11.13",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+exclude = [".venv"]
+indent-width = 4
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle (PEP8)
+    "F",  # Pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+default-section = "third-party"
+force-wrap-aliases = true
+split-on-trailing-comma = true
+lines-after-imports = 2
+combine-as-imports = true
+order-by-type = true
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.format]
+quote-style = "preserve"
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+show_error_codes = true
+warn_unused_ignores = true
+exclude = "(^|/)(.venv)/"
+namespace_packages = true
+ignore_missing_imports = true
